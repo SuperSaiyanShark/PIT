@@ -7,6 +7,7 @@ use App\Http\Controllers\WardController;
 use App\Http\Controllers\StaffRoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ResponsibilityController;
+use App\Http\Controllers\PatientController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,7 +22,43 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $totalStaff = \App\Models\User::where('staff_type', '!=', null)->count();
+    $totalDepartments = \App\Models\Department::count();
+    $totalSupervisors = \App\Models\User::where('staff_role_id', 2)->count(); // Assuming 2 is Supervisor role
+    
+    // Get staff by role
+    $staffByRole = \App\Models\User::with('staffRole')
+        ->whereNotNull('staff_role_id')
+        ->get()
+        ->groupBy('staffRole.name')
+        ->map(fn($users) => $users->count());
+    
+    // Get supervisors with their staff count
+    $supervisors = \App\Models\Ward::with('head')
+        ->whereNotNull('ward_head_id')
+        ->get()
+        ->groupBy('ward_head_id')
+        ->map(function($wards) {
+            $headId = $wards->first()->ward_head_id;
+            $head = \App\Models\User::find($headId);
+            $staffCount = \App\Models\User::where('ward_id', $wards->pluck('id')->toArray())->count();
+            
+            return [
+                'name' => $head?->name ?? 'Unknown',
+                'id' => $headId,
+                'staffCount' => $staffCount,
+            ];
+        })
+        ->values();
+    
+    return Inertia::render('Dashboard', [
+        'totalStaff' => $totalStaff,
+        'totalDepartments' => $totalDepartments,
+        'totalSupervisors' => $totalSupervisors,
+        'compliance' => 100,
+        'staffByRole' => $staffByRole,
+        'supervisors' => $supervisors,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'meadow.staff'])->group(function () {
@@ -54,6 +91,9 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     
     // Responsibility Management
     Route::resource('responsibilities', ResponsibilityController::class);
+    
+    // Patient Management
+    Route::resource('patients', PatientController::class);
     
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

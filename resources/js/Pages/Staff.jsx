@@ -128,22 +128,14 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
 
             <div className="min-h-screen bg-gradient-to-br from-cyan-100 to-cyan-50 p-8">
                 {/* Header */}
-                <div className="mb-8">
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <h1 className="text-4xl font-bold text-cyan-600">WELLMEADOW HOSPITAL</h1>
-                            <p className="text-cyan-700 font-semibold">MEDICAL STAFF MANAGEMENT</p>
-                            <p className="text-sm text-cyan-600">"Manage and View Medical Members"</p>
-                        </div>
-                        <PrimaryButton onClick={handleCreateStaff}>
-                            + Add New Staff
-                        </PrimaryButton>
-                    </div>
+                <div className="mb-6">
+                    <h1 className="text-3xl font-bold text-cyan-700">MEDICAL STAFF MANAGEMENT</h1>
+                    <p className="text-sm text-cyan-600 mt-1">"Manage and View Medical Members"</p>
                 </div>
 
                 {/* Search and Filter Section */}
                 <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                    <div className="flex flex-col md:flex-row gap-4 items-end mb-6">
+                    <div className="flex flex-col md:flex-row gap-4 items-end">
                         {/* Search Input */}
                         <div className="flex-1 min-w-0">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
@@ -163,7 +155,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                                 id="dept"
                                 value={selectedDepartment}
                                 onChange={(e) => setSelectedDepartment(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent bg-white"
+                                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent bg-white font-semibold"
                             >
                                 <option value="">ALL DEPARTMENTS</option>
                                 {uniqueDepartments.map(dept => (
@@ -178,7 +170,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setView('grid')}
-                                className={`px-3 py-2 rounded-lg transition ${view === 'grid' ? 'bg-cyan-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                className={`px-4 py-2 rounded-lg transition font-semibold ${view === 'grid' ? 'bg-cyan-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                             >
                                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"></path>
@@ -188,7 +180,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                             </button>
                             <button
                                 onClick={() => setView('list')}
-                                className={`px-3 py-2 rounded-lg transition ${view === 'list' ? 'bg-cyan-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                className={`px-4 py-2 rounded-lg transition font-semibold ${view === 'list' ? 'bg-cyan-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                             >
                                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path>
@@ -198,7 +190,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                     </div>
 
                     {/* Results Summary */}
-                    <div className="text-gray-700">
+                    <div className="text-gray-700 mt-4">
                         <p>Showing <span className="font-semibold text-cyan-600">{filteredStaff.length}</span> of <span className="font-semibold">{staff.length}</span> staff members</p>
                     </div>
                 </div>
@@ -208,25 +200,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                     view === 'grid' ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {filteredStaff.map(member => (
-                                <div key={member.id} className="relative">
-                                    <StaffCard staff={member} />
-                                    <div className="absolute top-2 right-2 flex gap-2">
-                                        <button
-                                            onClick={() => handleEditStaff(member)}
-                                            className="bg-cyan-500 hover:bg-cyan-600 text-white p-2 rounded-lg transition text-sm"
-                                            title="Edit"
-                                        >
-                                            ✎
-                                        </button>
-                                        <button
-                                            onClick={() => handleDeleteStaff(member.id)}
-                                            className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition text-sm"
-                                            title="Delete"
-                                        >
-                                            ✕
-                                        </button>
-                                    </div>
-                                </div>
+                                <StaffCard key={member.id} staff={member} />
                             ))}
                         </div>
                     ) : (
