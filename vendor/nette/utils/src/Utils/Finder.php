@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
+
+declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -13,7 +15,7 @@ use const GLOB_NOESCAPE, GLOB_NOSORT, GLOB_ONLYDIR;
 
 
 /**
- * Searches for files and directories in directory trees.
+ * Finder allows searching through directory trees using iterator.
  *
  * Finder::findFiles('*.php')
  *     ->size('> 10kB')
@@ -177,7 +179,7 @@ class Finder implements \IteratorAggregate
 
 
 	/**
-	 * Sets a comparison function for sorting entries within each directory.
+	 * Set a compare function for sorting directory entries. The function will be called to sort entries from the same directory.
 	 * @param  callable(FileInfo, FileInfo): int  $callback
 	 */
 	public function sortBy(callable $callback): static
@@ -198,7 +200,7 @@ class Finder implements \IteratorAggregate
 
 
 	/**
-	 * Appends the specified file paths to results. Passing null creates and returns a new sub-finder whose results are appended.
+	 * Adds the specified paths or appends a new finder that returns.
 	 * @param  string|list<string>|null  $paths
 	 */
 	public function append(string|array|null $paths = null): static

@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
+
+declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -71,7 +73,7 @@ class Paginator
 
 
 	/**
-	 * Returns the 1-based index of the first item on the current page, or 0 if the page is empty.
+	 * Returns the sequence number of the first element on the page
 	 * @return int<0, max>
 	 */
 	public function getFirstItemOnPage(): int
@@ -83,7 +85,7 @@ class Paginator
 
 
 	/**
-	 * Returns the 1-based index of the last item on the current page.
+	 * Returns the sequence number of the last element on the page
 	 * @return int<0, max>
 	 */
 	public function getLastItemOnPage(): int

@@ -21,9 +21,6 @@ final readonly class ChildProcessErrored implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public function __construct(Telemetry\Info $telemetryInfo)
     {
         $this->telemetryInfo = $telemetryInfo;

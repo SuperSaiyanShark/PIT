@@ -25,9 +25,6 @@ final readonly class AfterTestMethodCalled implements Event
     private Code\TestMethod $test;
     private Code\ClassMethod $calledMethod;
 
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, Code\ClassMethod $calledMethod)
     {
         $this->telemetryInfo = $telemetryInfo;

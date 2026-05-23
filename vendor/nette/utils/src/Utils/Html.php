@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
+
+declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -13,7 +15,7 @@ use const ENT_HTML5, ENT_NOQUOTES, ENT_QUOTES;
 
 
 /**
- * Generates HTML elements with automatic attribute escaping.
+ * HTML helper.
  *
  * @property ?string $accept
  * @property ?string $accesskey
@@ -346,7 +348,7 @@ class Html implements \ArrayAccess, \Countable, \IteratorAggregate, HtmlStringab
 
 
 	/**
-	 * Checks whether the element is a void (self-closing) element.
+	 * Is element empty?
 	 */
 	final public function isEmpty(): bool
 	{
@@ -432,7 +434,7 @@ class Html implements \ArrayAccess, \Countable, \IteratorAggregate, HtmlStringab
 
 
 	/**
-	 * Sets element's attribute via property assignment.
+	 * Overloaded setter for element's attribute.
 	 */
 	final public function __set(string $name, mixed $value): void
 	{
@@ -441,7 +443,7 @@ class Html implements \ArrayAccess, \Countable, \IteratorAggregate, HtmlStringab
 
 
 	/**
-	 * Returns element's attribute via property access.
+	 * Overloaded getter for element's attribute.
 	 */
 	final public function &__get(string $name): mixed
 	{
@@ -450,7 +452,7 @@ class Html implements \ArrayAccess, \Countable, \IteratorAggregate, HtmlStringab
 
 
 	/**
-	 * Checks if element's attribute is set.
+	 * Overloaded tester for element's attribute.
 	 */
 	final public function __isset(string $name): bool
 	{
@@ -459,7 +461,7 @@ class Html implements \ArrayAccess, \Countable, \IteratorAggregate, HtmlStringab
 
 
 	/**
-	 * Unsets element's attribute via property unset.
+	 * Overloaded unsetter for element's attribute.
 	 */
 	final public function __unset(string $name): void
 	{
@@ -468,7 +470,7 @@ class Html implements \ArrayAccess, \Countable, \IteratorAggregate, HtmlStringab
 
 
 	/**
-	 * Sets or returns element's attribute via method call.
+	 * Overloaded setter for element's attribute.
 	 * @param  mixed[]  $args
 	 */
 	final public function __call(string $m, array $args): mixed
@@ -707,7 +709,7 @@ class Html implements \ArrayAccess, \Countable, \IteratorAggregate, HtmlStringab
 
 
 	/**
-	 * Renders element's start tag, content and end tag. Pass indent level to enable pretty-printing.
+	 * Renders element's start tag, content and end tag.
 	 */
 	final public function render(?int $indent = null): string
 	{

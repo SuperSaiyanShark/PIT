@@ -12,7 +12,7 @@ namespace PHPUnit\Logging\TestDox;
 use function array_merge;
 use function assert;
 use function is_subclass_of;
-use function uasort;
+use function ksort;
 use function uksort;
 use function usort;
 use PHPUnit\Event\Code\TestMethod;
@@ -51,7 +51,7 @@ final class TestResultCollector
     private readonly IssueFilter $issueFilter;
 
     /**
-     * @var array<class-string, list<TestDoxTestMethod>>
+     * @var array<string, list<TestDoxTestMethod>>
      */
     private array $tests          = [];
     private ?TestStatus $status   = null;
@@ -66,13 +66,13 @@ final class TestResultCollector
     }
 
     /**
-     * @return array<class-string, TestResultCollection>
+     * @return array<string, TestResultCollection>
      */
     public function testMethodsGroupedByClass(): array
     {
         $result = [];
 
-        foreach ($this->tests as $className => $tests) {
+        foreach ($this->tests as $prettifiedClassName => $tests) {
             $testsByDeclaringClass = [];
 
             foreach ($tests as $test) {
@@ -121,17 +121,10 @@ final class TestResultCollector
                 $tests = array_merge($tests, $_tests);
             }
 
-            $result[$className] = TestResultCollection::fromArray($tests);
+            $result[$prettifiedClassName] = TestResultCollection::fromArray($tests);
         }
 
-        uasort(
-            $result,
-            static function (TestResultCollection $a, TestResultCollection $b): int
-            {
-                return $a->asArray()[0]->test()->testDox()->prettifiedClassName()
-                    <=> $b->asArray()[0]->test()->testDox()->prettifiedClassName();
-            },
-        );
+        ksort($result);
 
         return $result;
     }
@@ -377,11 +370,11 @@ final class TestResultCollector
 
     private function process(TestMethod $test): void
     {
-        if (!isset($this->tests[$test->className()])) {
-            $this->tests[$test->className()] = [];
+        if (!isset($this->tests[$test->testDox()->prettifiedClassName()])) {
+            $this->tests[$test->testDox()->prettifiedClassName()] = [];
         }
 
-        $this->tests[$test->className()][] = new TestDoxTestMethod(
+        $this->tests[$test->testDox()->prettifiedClassName()][] = new TestDoxTestMethod(
             $test,
             $this->status,
             $this->throwable,

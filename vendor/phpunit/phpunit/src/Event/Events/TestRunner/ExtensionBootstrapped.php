@@ -35,8 +35,6 @@ final readonly class ExtensionBootstrapped implements Event
     /**
      * @param class-string          $className
      * @param array<string, string> $parameters
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $className, array $parameters)
     {

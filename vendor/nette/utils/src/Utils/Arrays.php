@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
+
+declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -14,7 +16,7 @@ use const PREG_GREP_INVERT, PREG_SPLIT_DELIM_CAPTURE, PREG_SPLIT_NO_EMPTY;
 
 
 /**
- * Array manipulation utilities.
+ * Array tools library.
  */
 class Arrays
 {
@@ -70,9 +72,9 @@ class Arrays
 
 
 	/**
-	 * Recursively merges two arrays. Useful for merging tree structures. Behaves like the + operator:
-	 * key/value pairs from the second array are added to the first, with the first array's values taking
-	 * precedence on key collisions. Nested arrays are merged recursively instead of replaced.
+	 * Recursively merges two fields. It is useful, for example, for merging tree structures. It behaves as
+	 * the + operator for array, ie. it adds a key/value pair from the second array to the first one and retains
+	 * the value from the first array in the case of a key collision.
 	 * @template T1
 	 * @template T2
 	 * @param  array<T1>  $array1
@@ -199,7 +201,7 @@ class Arrays
 
 
 	/**
-	 * Inserts the contents of the $inserted array into the $array immediately before the $key.
+	 * Inserts the contents of the $inserted array into the $array immediately after the $key.
 	 * If $key is null (or does not exist), it is inserted at the beginning.
 	 * @param  array<mixed>  $array
 	 * @param  array<mixed>  $inserted
@@ -214,7 +216,7 @@ class Arrays
 
 
 	/**
-	 * Inserts the contents of the $inserted array into the $array immediately after the $key.
+	 * Inserts the contents of the $inserted array into the $array before the $key.
 	 * If $key is null (or does not exist), it is inserted at the end.
 	 * @param  array<mixed>  $array
 	 * @param  array<mixed>  $inserted
@@ -295,7 +297,7 @@ class Arrays
 
 
 	/**
-	 * Transforms a flat array of rows into an associative tree using a path expression like 'field|field[]field->field=field'.
+	 * Reformats table to associative tree. Path looks like 'field|field[]field->field=field'.
 	 * @param  array<mixed>  $array
 	 * @param  string|list<string>  $path
 	 * @return array<mixed>|\stdClass
@@ -353,7 +355,7 @@ class Arrays
 
 
 	/**
-	 * Converts array to associative: items with numeric keys are converted to keys, with $filling as their value.
+	 * Normalizes array to associative array. Replace numeric keys with their values, the new value will be $filling.
 	 * @param  array<mixed>  $array
 	 * @return array<string, mixed>
 	 */
@@ -498,7 +500,7 @@ class Arrays
 
 	/**
 	 * Invokes all callbacks and returns array of results.
-	 * @param  iterable<callable>  $callbacks
+	 * @param  callable[]  $callbacks
 	 * @return array<mixed>
 	 */
 	public static function invoke(iterable $callbacks, mixed ...$args): array
@@ -514,7 +516,7 @@ class Arrays
 
 	/**
 	 * Invokes method on every object in an array and returns array of results.
-	 * @param  iterable<object>  $objects
+	 * @param  object[]  $objects
 	 * @return array<mixed>
 	 */
 	public static function invokeMethod(iterable $objects, string $method, mixed ...$args): array
@@ -555,7 +557,8 @@ class Arrays
 
 
 	/**
-	 * Returns a copy of $array where every item is cast to string and wrapped with $prefix and $suffix.
+	 * Returns copy of the $array where every item is converted to string
+	 * and prefixed by $prefix and suffixed by $suffix.
 	 * @param  string[]  $array
 	 * @return string[]
 	 */

@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
+
+declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -164,7 +166,7 @@ final readonly class Type
 
 
 	/**
-	 * Returns a union type that accepts both the current type and the given type.
+	 * Returns a type that accepts both the current type and the given type.
 	 */
 	public function with(string|self $type): self
 	{
@@ -228,7 +230,7 @@ final readonly class Type
 
 
 	/**
-	 * Checks whether it is a simple (non-compound) type. Single nullable types such as ?int are also considered simple.
+	 * Returns true whether it is a simple type. Single nullable types are also considered to be simple types.
 	 */
 	public function isSimple(): bool
 	{
@@ -244,7 +246,7 @@ final readonly class Type
 
 
 	/**
-	 * Checks whether it is a simple PHP built-in type (int, string, bool, etc.).
+	 * Returns true whether the type is both a simple and a PHP built-in type.
 	 */
 	public function isBuiltin(): bool
 	{
@@ -253,7 +255,7 @@ final readonly class Type
 
 
 	/**
-	 * Checks whether it is a simple class or interface name (not a built-in type).
+	 * Returns true whether the type is both a simple and a class name.
 	 */
 	public function isClass(): bool
 	{
@@ -271,7 +273,7 @@ final readonly class Type
 
 
 	/**
-	 * Checks whether a value of the given type could be assigned to this type.
+	 * Verifies type compatibility. For example, it checks if a value of a certain type could be passed as a parameter.
 	 */
 	public function allows(string|self $type): bool
 	{

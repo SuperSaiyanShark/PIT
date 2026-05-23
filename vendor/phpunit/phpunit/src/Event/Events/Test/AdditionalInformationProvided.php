@@ -32,8 +32,6 @@ final readonly class AdditionalInformationProvided implements Event
 
     /**
      * @param non-empty-string $additionalInformation
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function __construct(Telemetry\Info $telemetryInfo, TestMethod $test, string $additionalInformation)
     {
