@@ -27,9 +27,4 @@ class Ward extends Model
     {
         return $this->hasMany(Responsibility::class);
     }
-
-    public function patients()
-    {
-        return $this->hasMany(Patient::class);
-    }
 }

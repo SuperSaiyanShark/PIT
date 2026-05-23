@@ -17,11 +17,9 @@ class ResponsibilityController extends Controller
     public function index()
     {
         $responsibilities = Responsibility::with('staff', 'department', 'ward')->get();
-        $patients = \App\Models\Patient::with('ward')->get();
         
         return Inertia::render('Responsibilities/Index', [
             'responsibilities' => $responsibilities,
-            'patients' => $patients,
         ]);
     }
 

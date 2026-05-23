@@ -57,14 +57,15 @@ export default function AuthenticatedLayout({ header, children }) {
                     <Link
                         href={route('patients.index')}
                         className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('patients.index') || route().current('patients.create') || route().current('patients.edit')
+                            route().current('patients.*')
                                 ? 'bg-cyan-500'
                                 : 'hover:bg-cyan-500'
                         }`}
                     >
-                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM9 6a3 3 0 11-6 0 3 3 0 016 0zm0 0h6m-6 0h6m-6 0a3 3 0 11-6 0 3 3 0 016 0zm9-6h6a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            <path d="M17 16h2a1 1 0 100-2h-2.382l-.447-2.236A2 2 0 0014.414 12H5.586a2 2 0 00-1.757 1.764l-.447 2.236H2a1 1 0 100 2h2z"></path>
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
                         </svg>
                         {sidebarOpen && <span>Patients</span>}
                     </Link>
