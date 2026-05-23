@@ -22,7 +22,43 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $totalStaff = \App\Models\User::where('staff_type', '!=', null)->count();
+    $totalDepartments = \App\Models\Department::count();
+    $totalSupervisors = \App\Models\User::where('staff_role_id', 2)->count(); // Assuming 2 is Supervisor role
+    
+    // Get staff by role
+    $staffByRole = \App\Models\User::with('staffRole')
+        ->whereNotNull('staff_role_id')
+        ->get()
+        ->groupBy('staffRole.name')
+        ->map(fn($users) => $users->count());
+    
+    // Get supervisors with their staff count
+    $supervisors = \App\Models\Ward::with('head')
+        ->whereNotNull('ward_head_id')
+        ->get()
+        ->groupBy('ward_head_id')
+        ->map(function($wards) {
+            $headId = $wards->first()->ward_head_id;
+            $head = \App\Models\User::find($headId);
+            $staffCount = \App\Models\User::where('ward_id', $wards->pluck('id')->toArray())->count();
+            
+            return [
+                'name' => $head?->name ?? 'Unknown',
+                'id' => $headId,
+                'staffCount' => $staffCount,
+            ];
+        })
+        ->values();
+    
+    return Inertia::render('Dashboard', [
+        'totalStaff' => $totalStaff,
+        'totalDepartments' => $totalDepartments,
+        'totalSupervisors' => $totalSupervisors,
+        'compliance' => 100,
+        'staffByRole' => $staffByRole,
+        'supervisors' => $supervisors,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'meadow.staff'])->group(function () {
@@ -56,16 +92,9 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     // Responsibility Management
     Route::resource('responsibilities', ResponsibilityController::class);
     
-
-    // ── Patient Management (Module 1) ─────────────────────────────
-    Route::get('/patients',                    [PatientController::class, 'index'])->name('patients.index');
-    Route::post('/patients',                   [PatientController::class, 'store'])->name('patients.store');
-    Route::get('/patients/{patient}',          [PatientController::class, 'show'])->name('patients.show');
-    Route::patch('/patients/{patient}',        [PatientController::class, 'update'])->name('patients.update');
-    Route::post('/patients/{patient}/medical-records', [PatientController::class, 'storeMedicalRecord'])->name('patients.medical-records.store');
-    Route::post('/patients/{patient}/admit',   [PatientController::class, 'admit'])->name('patients.admit');
-    Route::post('/patients/{patient}/discharge',[PatientController::class, 'discharge'])->name('patients.discharge');
-
+    // Patient Management
+    Route::resource('patients', PatientController::class);
+    
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
