@@ -1,10 +1,14 @@
 import { useState, useMemo } from 'react';
-import { Link, router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head } from '@inertiajs/react';
 
 export default function ResponsibilitiesIndex({ responsibilities = [], patients = [] }) {
+    // Tab State: 'patients' or 'responsibilities'
+    const [activeTab, setActiveTab] = useState('patients');
+
+    // Filter States
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedWard, setSelectedWard] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
@@ -27,56 +31,95 @@ export default function ResponsibilitiesIndex({ responsibilities = [], patients 
         return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
     };
 
+    const handleDelete = (id) => {
+        if (confirm('Are you sure you want to delete this item?')) {
+            // Add your Inertia router.delete call here
+            console.log(`Deleting item with id: ${id}`);
+        }
+    };
+
+    // Filter Patients
     const filteredPatients = useMemo(() => {
         return patients.filter(patient => {
             const wardName = patient.ward?.name || '';
-            
-            const matchesSearch = 
+            const matchesSearch =
                 patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 patient.allocation_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 wardName.toLowerCase().includes(searchTerm.toLowerCase());
-            
+
             const matchesWard = selectedWard === '' || patient.ward?.name === selectedWard;
             const matchesStatus = selectedStatus === '' || patient.status === selectedStatus;
-            
+
             return matchesSearch && matchesWard && matchesStatus;
         });
     }, [searchTerm, selectedWard, selectedStatus, patients]);
 
-    const formatDate = (dateString) => {
-        if (!dateString) return 'N/A';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-    };
+    // Filter Responsibilities
+    const filteredResponsibilities = useMemo(() => {
+        return responsibilities.filter(resp => {
+            const staffName = resp.staff?.name || '';
+            const type = resp.responsibility_type || '';
+            const desc = resp.description || '';
+            const wardName = resp.ward?.name || '';
+
+            const matchesSearch =
+                staffName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                wardName.toLowerCase().includes(searchTerm.toLowerCase());
+
+            const matchesWard = selectedWard === '' || resp.ward?.name === selectedWard;
+
+            return matchesSearch && matchesWard;
+        });
+    }, [searchTerm, selectedWard, responsibilities]);
 
     return (
         <AuthenticatedLayout>
-            <Head title="Patient Management" />
+            <Head title="Management Dashboard" />
 
             <div className="min-h-screen bg-gradient-to-br from-cyan-100 to-cyan-50 p-8">
+                
                 {/* Header */}
                 <div className="mb-8">
-                    <div className="flex justify-between items-start">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
-                            <h1 className="text-3xl font-bold text-cyan-700">PATIENT TRACKING</h1>
-                            <p className="text-cyan-700 font-semibold">Patient Care & Ward Assignment</p>
-                            <p className="text-sm text-cyan-600">"Monitor and manage patient admissions and ward assignments"</p>
+                            <h1 className="text-3xl font-bold text-cyan-700">CLINICAL DASHBOARD</h1>
+                            <p className="text-cyan-700 font-semibold">Monitor and manage patient care & staff duties</p>
                         </div>
-                        <Link href={route('patients.create')}>
-                            <PrimaryButton>+ Add New Patient</PrimaryButton>
-                        </Link>
+                        <div className="flex gap-2">
+                            <Link href={route('patients.create')}>
+                                <PrimaryButton>+ Add Patient</PrimaryButton>
+                            </Link>
+                        </div>
                     </div>
                 </div>
 
-                {/* Filters */}
-                <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                    <div className="flex flex-col md:flex-row gap-4 items-end mb-6">
+                {/* Navigation Tabs */}
+                <div className="flex border-b border-gray-200 mb-6 bg-white rounded-t-lg shadow-sm px-4 pt-2">
+                    <button
+                        onClick={() => { setActiveTab('patients'); setSearchTerm(''); }}
+                        className={`px-4 py-2 font-semibold text-sm border-b-2 transition ${activeTab === 'patients' ? 'border-cyan-600 text-cyan-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                    >
+                        Patient Tracking ({filteredPatients.length})
+                    </button>
+                    <button
+                        onClick={() => { setActiveTab('responsibilities'); setSearchTerm(''); }}
+                        className={`px-4 py-2 font-semibold text-sm border-b-2 transition ${activeTab === 'responsibilities' ? 'border-cyan-600 text-cyan-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                    >
+                        Staff Responsibilities ({filteredResponsibilities.length})
+                    </button>
+                </div>
+
+                {/* Shared Global Filters */}
+                <div className="bg-white rounded-b-lg shadow-md p-6 mb-8">
+                    <div className="flex flex-col md:flex-row gap-4 items-end mb-4">
                         {/* Search */}
-                        <div className="flex-1 min-w-0">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                        <div className="flex-1 min-w-0 w-full">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Search Filters</label>
                             <input
                                 type="text"
-                                placeholder="Search by patient name, allocation ID, or ward..."
+                                placeholder={activeTab === 'patients' ? "Search by patient name, allocation ID, or ward..." : "Search staff, duty type, description..."}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
@@ -84,13 +127,13 @@ export default function ResponsibilitiesIndex({ responsibilities = [], patients 
                         </div>
 
                         {/* Ward Filter */}
-                        <div className="flex items-center gap-2">
-                            <label htmlFor="ward" className="text-sm font-medium text-gray-700">Ward:</label>
+                        <div className="flex items-center gap-2 w-full md:w-auto">
+                            <label htmlFor="ward" className="text-sm font-medium text-gray-700 whitespace-nowrap">Ward:</label>
                             <select
                                 id="ward"
                                 value={selectedWard}
                                 onChange={(e) => setSelectedWard(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white font-semibold"
+                                className="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white font-semibold"
                             >
                                 <option value="">ALL WARDS</option>
                                 {uniqueWards.map(ward => (
@@ -99,250 +142,140 @@ export default function ResponsibilitiesIndex({ responsibilities = [], patients 
                             </select>
                         </div>
 
-                        {/* Status Filter */}
-                        <div className="flex items-center gap-2">
-                            <label htmlFor="status" className="text-sm font-medium text-gray-700">Status:</label>
-                            <select
-                                id="status"
-                                value={selectedStatus}
-                                onChange={(e) => setSelectedStatus(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white font-semibold"
-                            >
-                                <option value="">ALL STATUSES</option>
-                                {statuses.map(status => (
-                                    <option key={status} value={status}>
-                                        {status.charAt(0).toUpperCase() + status.slice(1)}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-
-                    {/* Results Summary */}
-                    <div className="text-gray-700">
-                        <p>Showing <span className="font-semibold text-cyan-600">{filteredPatients.length}</span> of <span className="font-semibold">{patients.length}</span> patients</p>
+                        {/* Status Filter (Only relevant to Patients Tab) */}
+                        {activeTab === 'patients' && (
+                            <div className="flex items-center gap-2 w-full md:w-auto">
+                                <label htmlFor="status" className="text-sm font-medium text-gray-700 whitespace-nowrap">Status:</label>
+                                <select
+                                    id="status"
+                                    value={selectedStatus}
+                                    onChange={(e) => setSelectedStatus(e.target.value)}
+                                    className="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white font-semibold"
+                                >
+                                    <option value="">ALL STATUSES</option>
+                                    {statuses.map(status => (
+                                        <option key={status} value={status}>
+                                            {status.charAt(0).toUpperCase() + status.slice(1)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Patient Cards */}
-                {filteredPatients.length > 0 ? (
-                    <div className="space-y-4">
-                        {filteredPatients.map(patient => (
-                            <div key={patient.id} className="bg-white rounded-lg shadow-md border-l-4 border-cyan-500 p-6 hover:shadow-lg transition">
-                                <div className="flex justify-between items-start">
-                                    <div className="flex-1">
-                                        {/* Patient Name and Status */}
-                                        <div className="flex items-center justify-between mb-4">
-                                            <h3 className="text-2xl font-bold text-gray-900">{patient.name}</h3>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(patient.status)}`}>
-                                                {patient.status}
-                                            </span>
+                {/* View Content Switching Conditional logic */}
+                {activeTab === 'patients' ? (
+                    filteredPatients.length > 0 ? (
+                        <div className="space-y-4">
+                            {filteredPatients.map(patient => (
+                                <div key={patient.id} className="bg-white rounded-lg shadow-md border-l-4 border-cyan-500 p-6 hover:shadow-lg transition">
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex-1">
+                                            <div className="flex items-center justify-between mb-4">
+                                                <h3 className="text-2xl font-bold text-gray-900">{patient.name}</h3>
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(patient.status)}`}>
+                                                    {patient.status}
+                                                </span>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-4">
+                                                <div>
+                                                    <p className="text-xs font-semibold text-gray-600 uppercase">Allocation ID</p>
+                                                    <p className="text-lg font-bold text-gray-900 mt-1">{patient.allocation_id}</p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-semibold text-gray-600 uppercase">Ward</p>
+                                                    <p className="text-lg font-bold text-gray-900 mt-1">{patient.ward?.name || 'N/A'}</p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-semibold text-gray-600 uppercase">Date Admitted</p>
+                                                    <p className="text-lg font-bold text-gray-900 mt-1">{formatDate(patient.date_admitted)}</p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-semibold text-gray-600 uppercase">Expected Duration</p>
+                                                    <p className="text-lg font-bold text-gray-900 mt-1">{patient.expected_duration} days</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="bg-cyan-50 rounded-lg p-4 border border-cyan-200">
+                                                <p className="text-xs font-semibold text-gray-600 uppercase">Expected Leave Date</p>
+                                                <p className="text-lg font-bold text-cyan-700 mt-1">{formatDate(patient.date_expected_leave)}</p>
+                                            </div>
                                         </div>
 
-                                        {/* Main Info Grid */}
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-4">
-                                            {/* Allocation ID */}
-                                            <div>
-                                                <p className="text-xs font-semibold text-gray-600 uppercase">Allocation ID</p>
-                                                <p className="text-lg font-bold text-gray-900 mt-1">{patient.allocation_id}</p>
-                                            </div>
-                                            
-                                            {/* Ward */}
-                                            <div>
-                                                <p className="text-xs font-semibold text-gray-600 uppercase">Ward</p>
-                                                <p className="text-lg font-bold text-gray-900 mt-1">{patient.ward?.name || 'N/A'}</p>
-                                            </div>
-                                            
-                                            {/* Date Admitted */}
-                                            <div>
-                                                <p className="text-xs font-semibold text-gray-600 uppercase">Date Admitted</p>
-                                                <p className="text-lg font-bold text-gray-900 mt-1">{formatDate(patient.date_admitted)}</p>
-                                            </div>
-                                            
-                                            {/* Expected Duration */}
-                                            <div>
-                                                <p className="text-xs font-semibold text-gray-600 uppercase">Expected Duration</p>
-                                                <p className="text-lg font-bold text-gray-900 mt-1">{patient.expected_duration} days</p>
-                                            </div>
-                                        </div>
-
-                                        {/* Expected Leave Date */}
-                                        <div className="bg-cyan-50 rounded-lg p-4 border border-cyan-200">
-                                            <p className="text-xs font-semibold text-gray-600 uppercase">Expected Leave Date</p>
-                                            <p className="text-lg font-bold text-cyan-700 mt-1">{formatDate(patient.date_expected_leave)}</p>
-                                        </div>
-                                    </div>
-
-                                    {/* Action Buttons */}
-                                    <div className="ml-6 flex flex-col gap-2">
-                                        <Link href={route('patients.edit', patient.id)}>
-                                            <button className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition font-semibold text-sm">
-                                                Edit
+                                        <div className="ml-6 flex flex-col gap-2">
+                                            <Link href={route('patients.edit', patient.id)}>
+                                                <button className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition font-semibold text-sm w-20">
+                                                    Edit
+                                                </button>
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(patient.id)}
+                                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition font-semibold text-sm w-20"
+                                            >
+                                                Delete
                                             </button>
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(patient.id)}
-                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition font-semibold text-sm"
-                                        >
-                                            Delete
-                                        </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-12 bg-white rounded-lg shadow-md">
-                        <p className="text-gray-600 text-lg">No patients found matching your search.</p>
-                    </div>
-                )}
-            </div>
-        </AuthenticatedLayout>
-    );
-}
-
-            <div className="min-h-screen bg-gradient-to-br from-cyan-100 to-cyan-50 p-8">
-                {/* Header */}
-                <div className="mb-8">
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <h1 className="text-3xl font-bold text-cyan-700">PATIENT TRACKING</h1>
-                            <p className="text-cyan-700 font-semibold">Patient Care & Ward Assignment</p>
-                            <p className="text-sm text-cyan-600">"Monitor and manage patient admissions and ward assignments"</p>
-                        </div>
-                        <Link href={route('patients.create')}>
-                            <PrimaryButton>+ Add New Patient</PrimaryButton>
-                        </Link>
-                    </div>
-                </div>
-
-                {/* Filters */}
-                <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                    <div className="flex flex-col md:flex-row gap-4 items-end mb-6">
-                        {/* Search */}
-                        <div className="flex-1 min-w-0">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
-                            <input
-                                type="text"
-                                placeholder="Search by patient name, allocation ID, or ward..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                            />
-                        </div>
-
-                        {/* Ward Filter */}
-                        <div className="flex items-center gap-2">
-                            <label htmlFor="ward" className="text-sm font-medium text-gray-700">Ward:</label>
-                            <select
-                                id="ward"
-                                value={selectedWard}
-                                onChange={(e) => setSelectedWard(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white font-semibold"
-                            >
-                                <option value="">ALL WARDS</option>
-                                {uniqueWards.map(ward => (
-                                    <option key={ward} value={ward}>{ward}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Status Filter */}
-                        <div className="flex items-center gap-2">
-                            <label htmlFor="status" className="text-sm font-medium text-gray-700">Status:</label>
-                            <select
-                                id="status"
-                                value={selectedStatus}
-                                onChange={(e) => setSelectedStatus(e.target.value)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-white font-semibold"
-                            >
-                                <option value="">ALL STATUSES</option>
-                                {statuses.map(status => (
-                                    <option key={status} value={status}>
-                                        {status.charAt(0).toUpperCase() + status.slice(1)}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-
-                    {/* Results Summary */}
-                    <div className="text-gray-700">
-                        <p>Showing <span className="font-semibold text-cyan-600">{filteredPatients.length}</span> of <span className="font-semibold">{patients.length}</span> patients</p>
-                    </div>
-                </div>
-
-                {/* Patient Cards */}
-                {filteredPatients.length > 0 ? (
-                    <div className="space-y-4">
-                        {filteredPatients.map(patient => (
-                            <div key={patient.id} className="bg-white rounded-lg shadow-md border-l-4 border-cyan-500 p-6 hover:shadow-lg transition">
-                                <div className="flex justify-between items-start">
-                                    <div className="flex-1">
-                                        {/* Patient Name and Status */}\n                                        <div className="flex items-center justify-between mb-3\">\n                                            <h3 className=\"text-xl font-bold text-gray-900\">{patient.name}</h3>\n                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(patient.status)}`}>\n                                                {patient.status}\n                                            </span>\n                                        </div>\n\n                                        {/* Main Info Grid */}\n                                        <div className=\"grid grid-cols-2 md:grid-cols-4 gap-4 mb-4\">\n                                            {/* Allocation ID */}\n                                            <div>\n                                                <p className=\"text-xs font-semibold text-gray-600\">ALLOCATION ID</p>\n                                                <p className=\"text-sm font-bold text-gray-900\">{patient.allocation_id}</p>\n                                            </div>\n                                            \n                                            {/* Ward */}\n                                            <div>\n                                                <p className=\"text-xs font-semibold text-gray-600\">WARD</p>\n                                                <p className=\"text-sm font-bold text-gray-900\">{patient.ward?.name || 'N/A'}</p>\n                                            </div>\n                                            \n                                            {/* Date Admitted */}\n                                            <div>\n                                                <p className=\"text-xs font-semibold text-gray-600\">DATE ADMITTED</p>\n                                                <p className=\"text-sm font-bold text-gray-900\">{new Date(patient.date_admitted).toLocaleDateString()}</p>\n                                            </div>\n                                            \n                                            {/* Expected Duration */}\n                                            <div>\n                                                <p className=\"text-xs font-semibold text-gray-600\">EXPECTED DURATION</p>\n                                                <p className=\"text-sm font-bold text-gray-900\">{patient.expected_duration} days</p>\n                                            </div>\n                                        </div>\n\n                                        {/* Expected Leave Date */}\n                                        <div className=\"bg-gray-50 rounded-lg p-3 mb-4\">\n                                            <p className=\"text-xs font-semibold text-gray-600\">EXPECTED LEAVE DATE</p>\n                                            <p className=\"text-sm font-bold text-gray-900\">{new Date(patient.date_expected_leave).toLocaleDateString()}</p>\n                                        </div>\n                                    </div>\n\n                                    {/* Action Buttons */}\n                                    <div className=\"ml-4 flex gap-2\">\n                                        <Link href={route('patients.edit', patient.id)}>\n                                            <button className=\"bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition font-semibold\">\n                                                Edit\n                                            </button>\n                                        </Link>\n                                        <button\n                                            onClick={() => handleDelete(patient.id)}\n                                            className=\"bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition font-semibold\"\n                                        >\n                                            Delete\n                                        </button>\n                                    </div>\n                                </div>\n                            </div>\n                        ))}\n                    </div>\n                ) : (\n                    <div className=\"text-center py-12 bg-white rounded-lg shadow-md\">\n                        <p className=\"text-gray-600 text-lg\">No patients found matching your search.</p>\n                    </div>\n                )}\n            </div>\n        </AuthenticatedLayout>\n    );\n}
-                                                        </button>
-                                                    </Link>
-                                                    <button
-                                                        onClick={() => handleDelete(responsibility.id)}
-                                                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition text-xs"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                            ))}
                         </div>
                     ) : (
+                        <div className="text-center py-12 bg-white rounded-lg shadow-md">
+                            <p className="text-gray-600 text-lg">No patients found matching your search.</p>
+                        </div>
+                    )
+                ) : (
+                    /* Responsibilities Tab Panel */
+                    filteredResponsibilities.length > 0 ? (
                         <div className="space-y-4">
                             {filteredResponsibilities.map(responsibility => (
-                                <div key={responsibility.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-cyan-500">
+                                <div key={responsibility.id} className="bg-white rounded-lg shadow-md p-6 border-l-4 border-cyan-500 hover:shadow-lg transition">
                                     <div className="flex justify-between items-start mb-4">
                                         <div>
                                             <h3 className="text-lg font-semibold text-gray-900">
-                                                {responsibility.staff?.name}
+                                                {responsibility.staff?.name || 'Assigned Staff'}
                                             </h3>
-                                            <p className="text-sm text-gray-600">
+                                            <p className="text-sm text-gray-600 font-medium">
                                                 {responsibility.responsibility_type}
                                             </p>
                                         </div>
                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(responsibility.status)}`}>
-                                            {responsibility.status}
+                                            {responsibility.status || 'Active'}
                                         </span>
                                     </div>
 
-                                    <p className="text-gray-700 mb-3">{responsibility.description}</p>
+                                    <p className="text-gray-700 mb-4 bg-gray-50 p-3 rounded border border-gray-100">{responsibility.description}</p>
 
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 text-sm">
                                         <div>
-                                            <span className="font-semibold text-gray-700">Department:</span>
-                                            <p className="text-gray-600">{responsibility.department?.name || '-'}</p>
+                                            <span className="font-semibold text-gray-400 block text-xs uppercase">Department</span>
+                                            <p className="text-gray-800 font-semibold">{responsibility.department?.name || '-'}</p>
                                         </div>
                                         <div>
-                                            <span className="font-semibold text-gray-700">Ward:</span>
-                                            <p className="text-gray-600">{responsibility.ward?.name || '-'}</p>
+                                            <span className="font-semibold text-gray-400 block text-xs uppercase">Ward</span>
+                                            <p className="text-gray-800 font-semibold">{responsibility.ward?.name || '-'}</p>
                                         </div>
                                         <div>
-                                            <span className="font-semibold text-gray-700">Start Date:</span>
-                                            <p className="text-gray-600">{responsibility.start_date || '-'}</p>
+                                            <span className="font-semibold text-gray-400 block text-xs uppercase">Start Date</span>
+                                            <p className="text-gray-600">{formatDate(responsibility.start_date)}</p>
                                         </div>
                                         <div>
-                                            <span className="font-semibold text-gray-700">End Date:</span>
-                                            <p className="text-gray-600">{responsibility.end_date || '-'}</p>
+                                            <span className="font-semibold text-gray-400 block text-xs uppercase">End Date</span>
+                                            <p className="text-gray-600">{formatDate(responsibility.end_date)}</p>
                                         </div>
                                     </div>
 
-                                    <div className="flex gap-2 justify-end">
+                                    <div className="flex gap-2 justify-end border-t pt-3 border-gray-100">
                                         <Link href={route('responsibilities.edit', responsibility.id)}>
-                                            <button className="bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1 rounded transition text-sm">
+                                            <button className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-1.5 rounded transition text-sm font-semibold">
                                                 Edit
                                             </button>
                                         </Link>
                                         <button
                                             onClick={() => handleDelete(responsibility.id)}
-                                            className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition text-sm"
+                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded transition text-sm font-semibold"
                                         >
                                             Delete
                                         </button>
@@ -350,11 +283,11 @@ export default function ResponsibilitiesIndex({ responsibilities = [], patients 
                                 </div>
                             ))}
                         </div>
+                    ) : (
+                        <div className="bg-white rounded-lg shadow-md p-12 text-center">
+                            <p className="text-gray-500 text-lg">No responsibilities found matching your filters.</p>
+                        </div>
                     )
-                ) : (
-                    <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                        <p className="text-gray-500 text-lg">No responsibilities found matching your filters.</p>
-                    </div>
                 )}
             </div>
         </AuthenticatedLayout>
