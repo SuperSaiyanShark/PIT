@@ -66,11 +66,11 @@
                         </p>
 
                         <div class="flex gap-4">
-                            <a href="{{ route('treatments.edit', $treatment) }}" 
+                            <a href="{{ route('module4.treatments.edit', $treatment) }}" 
                                class="px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
                                 Edit Treatment
                             </a>
-                            <form action="{{ route('treatments.destroy', $treatment) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('module4.treatments.destroy', $treatment) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
@@ -78,7 +78,7 @@
                                     Delete Treatment
                                 </button>
                             </form>
-                            <a href="{{ route('treatments.index') }}" class="px-4 py-2 bg-cyan-400 text-white rounded-md hover:bg-cyan-300">
+                            <a href="{{ route('module4.treatments.index') }}" class="px-4 py-2 bg-cyan-400 text-white rounded-md hover:bg-cyan-300">
                                 Back to Treatments
                             </a>
                         </div>

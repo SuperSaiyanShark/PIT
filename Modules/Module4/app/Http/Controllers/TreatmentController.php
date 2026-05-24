@@ -2,7 +2,7 @@
 
 namespace Modules\Module4\app\Http\Controllers;
 
-use App\Models\Treatment;
+use Modules\Module4\app\Models\Treatment;
 use Illuminate\Http\Request;
 
 class TreatmentController extends Controller
@@ -13,7 +13,7 @@ class TreatmentController extends Controller
     public function index()
     {
         $treatments = auth()->user()->treatments()->latest()->paginate(10);
-        return view('treatments.index', compact('treatments'));
+        return view('module4::treatments.index', compact('treatments'));
     }
 
     /**
@@ -21,7 +21,7 @@ class TreatmentController extends Controller
      */
     public function create()
     {
-        return view('treatments.create');
+        return view('module4::treatments.create');
     }
 
     /**
@@ -43,7 +43,7 @@ class TreatmentController extends Controller
 
         $treatment = Treatment::create($validated);
 
-        return redirect()->route('treatments.show', $treatment)
+        return redirect()->route('module4.treatments.show', $treatment)
                         ->with('success', 'Treatment recorded successfully!');
     }
 
@@ -53,7 +53,7 @@ class TreatmentController extends Controller
     public function show(Treatment $treatment)
     {
         $this->authorize('view', $treatment);
-        return view('treatments.show', compact('treatment'));
+        return view('module4::treatments.show', compact('treatment'));
     }
 
     /**
@@ -62,7 +62,7 @@ class TreatmentController extends Controller
     public function edit(Treatment $treatment)
     {
         $this->authorize('update', $treatment);
-        return view('treatments.edit', compact('treatment'));
+        return view('module4::treatments.edit', compact('treatment'));
     }
 
     /**
@@ -83,7 +83,7 @@ class TreatmentController extends Controller
 
         $treatment->update($validated);
 
-        return redirect()->route('treatments.show', $treatment)
+        return redirect()->route('module4.treatments.show', $treatment)
                         ->with('success', 'Treatment updated successfully!');
     }
 
@@ -95,7 +95,7 @@ class TreatmentController extends Controller
         $this->authorize('delete', $treatment);
         $treatment->delete();
 
-        return redirect()->route('treatments.index')
+        return redirect()->route('module4.treatments.index')
                         ->with('success', 'Treatment deleted successfully!');
     }
 }

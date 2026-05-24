@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\TreatmentController;
-use App\Http\Controllers\StaffController;
+use Modules\Module4\app\Http\Controllers\ProfileController;
+use Modules\Module4\app\Http\Controllers\AppointmentController;
+use Modules\Module4\app\Http\Controllers\TreatmentController;
+use Modules\Module4\app\Http\Controllers\StaffController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('module4::dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

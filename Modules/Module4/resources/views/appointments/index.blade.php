@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-white leading-tight">
                 {{ __('My Appointments') }}
             </h2>
-            <a href="{{ route('appointments.choose-patient-type') }}" class="px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
+            <a href="{{ route('module4.appointments.choose-patient-type') }}" class="px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
                 Schedule New Appointment
             </a>
         </div>
@@ -46,15 +46,15 @@
                                     </div>
                                 </div>
                                 <div class="flex gap-2 ml-4">
-                                    <a href="{{ route('appointments.show', $appointment) }}" 
+                                    <a href="{{ route('module4.appointments.show', $appointment) }}" 
                                        class="px-3 py-2 text-sm bg-white text-cyan-600 rounded hover:bg-cyan-100">
                                         View
                                     </a>
-                                    <a href="{{ route('appointments.edit', $appointment) }}" 
+                                    <a href="{{ route('module4.appointments.edit', $appointment) }}" 
                                        class="px-3 py-2 text-sm bg-cyan-400 text-white rounded hover:bg-cyan-300">
                                         Edit
                                     </a>
-                                    <form action="{{ route('appointments.destroy', $appointment) }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('module4.appointments.destroy', $appointment) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="px-3 py-2 text-sm bg-red-500 text-white rounded hover:bg-red-600"
@@ -70,7 +70,7 @@
             @else
                 <div class="bg-cyan-500 overflow-hidden shadow-sm sm:rounded-lg p-6 text-center">
                     <p class="text-cyan-100 mb-4">You have no appointments scheduled.</p>
-                    <a href="{{ route('appointments.choose-patient-type') }}" class="inline-block px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
+                    <a href="{{ route('module4.appointments.choose-patient-type') }}" class="inline-block px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
                         Schedule Your First Appointment
                     </a>
                 </div>

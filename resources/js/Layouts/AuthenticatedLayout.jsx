@@ -39,6 +39,20 @@ export default function AuthenticatedLayout({ header, children }) {
                         {sidebarOpen && <span>Dashboard</span>}
                     </Link>
 
+                    <a
+                        href={route('module4.dashboard')}
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
+                            route().current('module4.dashboard')
+                                ? 'bg-cyan-500'
+                                : 'hover:bg-cyan-500'
+                        }`}
+                    >
+                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.5 1.5H5.75A2.75 2.75 0 003 4.25v11.5A2.75 2.75 0 005.75 18.5h8.5a2.75 2.75 0 002.75-2.75V9.5m-11-6h6m-6 4h6m-6 4h6"></path>
+                        </svg>
+                        {sidebarOpen && <span>Appointments and Treatments</span>}
+                    </a>
+
                     <Link
                         href={route('staff.index')}
                         className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${

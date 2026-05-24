@@ -59,11 +59,11 @@
                         </p>
 
                         <div class="flex gap-4">
-                            <a href="{{ route('staff.edit', $staff) }}" 
+                            <a href="{{ route('module4.staff.edit', $staff) }}" 
                                class="px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
                                 Edit
                             </a>
-                            <form action="{{ route('staff.destroy', $staff) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('module4.staff.destroy', $staff) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
@@ -71,7 +71,7 @@
                                     Deactivate
                                 </button>
                             </form>
-                            <a href="{{ route('staff.index') }}" class="px-4 py-2 bg-cyan-400 text-white rounded-md hover:bg-cyan-300">
+                            <a href="{{ route('module4.staff.index') }}" class="px-4 py-2 bg-cyan-400 text-white rounded-md hover:bg-cyan-300">
                                 Back to Staff
                             </a>
                         </div>

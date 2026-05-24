@@ -1,18 +1,33 @@
-<x-app-layout>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WELLMEADOWS HOSPITAL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
     <div class="min-h-screen bg-cyan-200">
         <!-- Header -->
         <div class="bg-cyan-500 text-white py-6 px-6">
-            <h1 class="text-3xl font-bold">WELLMEADOWS HOSPITAL</h1>
-            <p class="text-cyan-100 mt-1">APPOINTMENT AND TREATMENT MODULE</p>
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">WELLMEADOWS HOSPITAL</h1>
+                    <p class="text-cyan-100 mt-1">APPOINTMENT AND TREATMENT MODULE</p>
+                </div>
+                <a href="{{ route('dashboard') }}" class="bg-white text-cyan-500 px-6 py-2 rounded-lg font-semibold hover:bg-cyan-100 transition">
+                    Back to Main Dashboard
+                </a>
+            </div>
         </div>
 
         <!-- Main Content -->
         <div class="py-12 px-6">
             <div class="max-w-6xl mx-auto">
                 <!-- Main Navigation Cards Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Appointments Card -->
-                    <a href="{{ route('appointments.index') }}" 
+                    <a href="{{ route('module4.appointments.index') }}" 
                        class="transform hover:scale-105 transition duration-300">
                         <div class="bg-cyan-500 rounded-3xl shadow-xl p-12 text-white text-center hover:bg-cyan-600 cursor-pointer">
                             <div class="flex justify-center mb-6">
@@ -27,7 +42,7 @@
                     </a>
 
                     <!-- Treatment History Card -->
-                    <a href="{{ route('appointments.recent') }}" 
+                    <a href="{{ route('module4.appointments.recent') }}" 
                        class="transform hover:scale-105 transition duration-300">
                         <div class="bg-cyan-500 rounded-3xl shadow-xl p-12 text-white text-center hover:bg-cyan-600 cursor-pointer">
                             <div class="flex justify-center mb-6">
@@ -42,7 +57,7 @@
                     </a>
 
                     <!-- Record Treatments Card -->
-                    <a href="{{ route('treatments.create') }}" 
+                    <a href="{{ route('module4.treatments.create') }}" 
                        class="transform hover:scale-105 transition duration-300">
                         <div class="bg-cyan-500 rounded-3xl shadow-xl p-12 text-white text-center hover:bg-cyan-600 cursor-pointer">
                             <div class="flex justify-center mb-6">
@@ -56,8 +71,23 @@
                         </div>
                     </a>
 
+                    <!-- All Treatments Card -->
+                    <a href="{{ route('module4.treatments.index') }}" 
+                       class="transform hover:scale-105 transition duration-300">
+                        <div class="bg-cyan-500 rounded-3xl shadow-xl p-12 text-white text-center hover:bg-cyan-600 cursor-pointer">
+                            <div class="flex justify-center mb-6">
+                                <div class="bg-white bg-opacity-20 rounded-full p-6">
+                                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <h2 class="text-3xl font-bold">View treatments</h2>
+                        </div>
+                    </a>
+
                     <!-- Assign Doctors and Nurses Card -->
-                    <a href="{{ route('staff.index') }}" 
+                    <a href="{{ route('module4.staff.index') }}" 
                        class="transform hover:scale-105 transition duration-300">
                         <div class="bg-cyan-500 rounded-3xl shadow-xl p-12 text-white text-center hover:bg-cyan-600 cursor-pointer">
                             <div class="flex justify-center mb-6">
@@ -67,11 +97,27 @@
                                     </svg>
                                 </div>
                             </div>
-                            <h2 class="text-3xl font-bold">Assign doctors and<br>nurses</h2>
+                            <h2 class="text-3xl font-bold">Staff list</h2>
+                        </div>
+                    </a>
+
+                    <!-- Create New Staff Card -->
+                    <a href="{{ route('module4.staff.create') }}" 
+                       class="transform hover:scale-105 transition duration-300">
+                        <div class="bg-cyan-500 rounded-3xl shadow-xl p-12 text-white text-center hover:bg-cyan-600 cursor-pointer">
+                            <div class="flex justify-center mb-6">
+                                <div class="bg-white bg-opacity-20 rounded-full p-6">
+                                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <h2 class="text-3xl font-bold">Add staff member</h2>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</body>
+</html>

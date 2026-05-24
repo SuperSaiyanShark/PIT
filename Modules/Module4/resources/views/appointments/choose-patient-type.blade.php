@@ -13,7 +13,7 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Inpatient Option -->
-                        <a href="{{ route('appointments.create', ['type' => 'inpatient']) }}" 
+                        <a href="{{ route('module4.appointments.create', ['type' => 'inpatient']) }}" 
                            class="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900 transition cursor-pointer">
                             <div class="flex flex-col items-center text-center">
                                 <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
@@ -29,7 +29,7 @@
                         </a>
 
                         <!-- Outpatient Option -->
-                        <a href="{{ route('appointments.create', ['type' => 'outpatient']) }}" 
+                        <a href="{{ route('module4.appointments.create', ['type' => 'outpatient']) }}" 
                            class="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-900 transition cursor-pointer">
                             <div class="flex flex-col items-center text-center">
                                 <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-4">

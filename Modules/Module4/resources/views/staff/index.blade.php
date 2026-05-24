@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-white leading-tight">
                 {{ __('Staff Members') }}
             </h2>
-            <a href="{{ route('staff.create') }}" class="px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
+            <a href="{{ route('module4.staff.create') }}" class="px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
                 Add Staff Member
             </a>
         </div>
@@ -32,13 +32,13 @@
                                     <p class="text-sm text-cyan-100 mb-4">{{ Str::limit($member->bio, 100) }}</p>
                                 @endif
                                 <div class="flex gap-2 pt-4 border-t border-teal-400">
-                                    <a href="{{ route('staff.show', $member) }}" class="text-white hover:underline text-sm">
+                                    <a href="{{ route('module4.staff.show', $member) }}" class="text-white hover:underline text-sm">
                                         View
                                     </a>
-                                    <a href="{{ route('staff.edit', $member) }}" class="text-cyan-100 hover:underline text-sm">
+                                    <a href="{{ route('module4.staff.edit', $member) }}" class="text-cyan-100 hover:underline text-sm">
                                         Edit
                                     </a>
-                                    <form action="{{ route('staff.destroy', $member) }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('module4.staff.destroy', $member) }}" method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-200 hover:underline text-sm"
@@ -54,7 +54,7 @@
             @else
                 <div class="bg-cyan-500 overflow-hidden shadow-sm sm:rounded-lg p-6 text-center">
                     <p class="text-cyan-100 mb-4">No active staff members.</p>
-                    <a href="{{ route('staff.create') }}" class="inline-block px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
+                    <a href="{{ route('module4.staff.create') }}" class="inline-block px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
                         Add First Staff Member
                     </a>
                 </div>

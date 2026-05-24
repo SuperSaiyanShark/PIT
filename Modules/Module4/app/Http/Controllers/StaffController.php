@@ -2,7 +2,7 @@
 
 namespace Modules\Module4\app\Http\Controllers;
 
-use App\Models\Staff;
+use Modules\Module4\app\Models\Staff;
 use Illuminate\Http\Request;
 
 class StaffController extends Controller
@@ -13,7 +13,7 @@ class StaffController extends Controller
     public function index()
     {
         $staff = Staff::where('is_active', true)->paginate(10);
-        return view('staff.index', compact('staff'));
+        return view('module4::staff.index', compact('staff'));
     }
 
     /**
@@ -21,7 +21,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        return view('staff.create');
+        return view('module4::staff.create');
     }
 
     /**
@@ -40,7 +40,7 @@ class StaffController extends Controller
 
         Staff::create($validated);
 
-        return redirect()->route('staff.index')
+        return redirect()->route('module4.staff.index')
                         ->with('success', 'Staff member added successfully!');
     }
 
@@ -49,7 +49,7 @@ class StaffController extends Controller
      */
     public function show(Staff $staff)
     {
-        return view('staff.show', compact('staff'));
+        return view('module4::staff.show', compact('staff'));
     }
 
     /**
@@ -57,7 +57,7 @@ class StaffController extends Controller
      */
     public function edit(Staff $staff)
     {
-        return view('staff.edit', compact('staff'));
+        return view('module4::staff.edit', compact('staff'));
     }
 
     /**
@@ -77,7 +77,7 @@ class StaffController extends Controller
 
         $staff->update($validated);
 
-        return redirect()->route('staff.show', $staff)
+        return redirect()->route('module4.staff.show', $staff)
                         ->with('success', 'Staff member updated successfully!');
     }
 
@@ -88,7 +88,7 @@ class StaffController extends Controller
     {
         $staff->update(['is_active' => false]);
 
-        return redirect()->route('staff.index')
+        return redirect()->route('module4.staff.index')
                         ->with('success', 'Staff member deactivated successfully!');
     }
 }

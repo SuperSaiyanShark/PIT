@@ -44,7 +44,7 @@
                                             {{ ucfirst($appointment->status) }}
                                         </span>
                                         <div class="mt-3">
-                                            <a href="{{ route('appointments.show', $appointment) }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                                            <a href="{{ route('module4.appointments.show', $appointment) }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm">
                                                 View Details
                                             </a>
                                         </div>
@@ -61,7 +61,7 @@
             @endif
 
             <div class="mt-6">
-                <a href="{{ route('appointments.index') }}" class="text-blue-600 dark:text-blue-400 hover:underline">
+                <a href="{{ route('module4.appointments.index') }}" class="text-blue-600 dark:text-blue-400 hover:underline">
                     View All Appointments
                 </a>
             </div>

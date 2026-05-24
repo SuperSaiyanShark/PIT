@@ -2,7 +2,7 @@
 
 namespace Modules\Module4\app\Http\Controllers;
 
-use App\Models\Appointment;
+use Modules\Module4\app\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -15,7 +15,7 @@ class AppointmentController extends Controller
     public function index()
     {
         $appointments = auth()->user()->appointments;
-        return view('appointments.index', compact('appointments'));
+        return view('module4::appointments.index', compact('appointments'));
     }
 
     /**
@@ -23,7 +23,7 @@ class AppointmentController extends Controller
      */
     public function choosePatientType()
     {
-        return view('appointments.choose-patient-type');
+        return view('module4::appointments.choose-patient-type');
     }
 
     /**
@@ -31,7 +31,7 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        return view('appointments.create');
+        return view('module4::appointments.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::create($validated);
 
-        return redirect()->route('appointments.show', $appointment)
+        return redirect()->route('module4.appointments.show', $appointment)
                         ->with('success', 'Appointment scheduled successfully!');
     }
 
@@ -62,7 +62,7 @@ class AppointmentController extends Controller
     public function show(Appointment $appointment)
     {
         $this->authorize('view', $appointment);
-        return view('appointments.show', compact('appointment'));
+        return view('module4::appointments.show', compact('appointment'));
     }
 
     /**
@@ -71,7 +71,7 @@ class AppointmentController extends Controller
     public function edit(Appointment $appointment)
     {
         $this->authorize('update', $appointment);
-        return view('appointments.edit', compact('appointment'));
+        return view('module4::appointments.edit', compact('appointment'));
     }
 
     /**
@@ -91,7 +91,7 @@ class AppointmentController extends Controller
 
         $appointment->update($validated);
 
-        return redirect()->route('appointments.show', $appointment)
+        return redirect()->route('module4.appointments.show', $appointment)
                         ->with('success', 'Appointment updated successfully!');
     }
 
@@ -104,7 +104,7 @@ class AppointmentController extends Controller
         
         $appointment->delete();
 
-        return redirect()->route('appointments.index')
+        return redirect()->route('module4.appointments.index')
                         ->with('success', 'Appointment cancelled successfully!');
     }
 
@@ -114,6 +114,6 @@ class AppointmentController extends Controller
     public function recent()
     {
         $appointments = auth()->user()->appointments()->latest()->limit(5)->get();
-        return view('appointments.recent', compact('appointments'));
+        return view('module4::appointments.recent', compact('appointments'));
     }
 }

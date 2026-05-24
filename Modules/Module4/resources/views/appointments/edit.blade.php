@@ -9,7 +9,7 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-cyan-500 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-white">
-                    <form action="{{ route('appointments.update', $appointment) }}" method="POST" class="space-y-6">
+                    <form action="{{ route('module4.appointments.update', $appointment) }}" method="POST" class="space-y-6">
                         @csrf
                         @method('PATCH')
 

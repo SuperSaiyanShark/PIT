@@ -9,7 +9,7 @@
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-cyan-500 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-white">
-                    <form action="{{ route('treatments.store') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('module4.treatments.store') }}" method="POST" class="space-y-6">
                         @csrf
 
                         <!-- Treatment Name -->
@@ -82,7 +82,7 @@
                             <button type="submit" class="px-4 py-2 bg-white text-teal-600 rounded-md hover:bg-teal-100 focus:outline-none focus:ring-2 focus:ring-white">
                                 Record Treatment
                             </button>
-                            <a href="{{ route('treatments.index') }}" class="px-4 py-2 bg-teal-400 text-white rounded-md hover:bg-teal-300">
+                            <a href="{{ route('module4.treatments.index') }}" class="px-4 py-2 bg-teal-400 text-white rounded-md hover:bg-teal-300">
                                 Back
                             </a>
                         </div>

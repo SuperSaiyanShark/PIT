@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-white leading-tight">
                 {{ __('My Treatments') }}
             </h2>
-            <a href="{{ route('treatments.create') }}" class="px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
+            <a href="{{ route('module4.treatments.create') }}" class="px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
                 Record New Treatment
             </a>
         </div>
@@ -44,13 +44,13 @@
                                         {{ ucfirst(str_replace('-', ' ', $treatment->status)) }}
                                     </span>
                                     <div class="mt-3 space-x-2">
-                                        <a href="{{ route('treatments.show', $treatment) }}" class="text-white hover:underline text-sm">
+                                        <a href="{{ route('module4.treatments.show', $treatment) }}" class="text-white hover:underline text-sm">
                                             View
                                         </a>
-                                        <a href="{{ route('treatments.edit', $treatment) }}" class="text-cyan-100 hover:underline text-sm">
+                                        <a href="{{ route('module4.treatments.edit', $treatment) }}" class="text-cyan-100 hover:underline text-sm">
                                             Edit
                                         </a>
-                                        <form action="{{ route('treatments.destroy', $treatment) }}" method="POST" style="display: inline;">
+                                        <form action="{{ route('module4.treatments.destroy', $treatment) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-200 hover:underline text-sm"
@@ -67,7 +67,7 @@
             @else
                 <div class="bg-cyan-500 overflow-hidden shadow-sm sm:rounded-lg p-6 text-center">
                     <p class="text-cyan-100 mb-4">You have no treatments recorded.</p>
-                    <a href="{{ route('treatments.create') }}" class="inline-block px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
+                    <a href="{{ route('module4.treatments.create') }}" class="inline-block px-4 py-2 bg-white text-cyan-600 rounded-md hover:bg-cyan-100">
                         Record Your First Treatment
                     </a>
                 </div>
