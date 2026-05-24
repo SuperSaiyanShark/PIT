@@ -3,109 +3,88 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ward;
-use App\Models\Department;
-use App\Models\User;
+use App\Models\Bed;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class WardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $wards = Ward::with('department', 'head', 'staff')->get();
-        
-        return Inertia::render('Wards/Index', [
-            'wards' => $wards,
+        $wards = Ward::withCount('beds')->get();
+        return Inertia::render('WardManagement/Index', [
+            'wards' => $wards
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $departments = Department::all();
-        $heads = User::where('role', 'nurse')->orWhere('role', 'head')->get();
-        
-        return Inertia::render('Wards/Create', [
-            'departments' => $departments,
-            'heads' => $heads,
-        ]);
+        return Inertia::render('WardManagement/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'department_id' => 'required|exists:departments,id',
-            'floor' => 'nullable|integer',
-            'capacity' => 'nullable|integer|min:1',
-            'ward_head_id' => 'nullable|exists:users,id',
+        $request->validate([
+            'allocationid' => 'required|unique:wards',
+            'wardNumber' => 'required|unique:wards',
+            'wardName' => 'required',
+            'capacity' => 'required|integer|min:1',
         ]);
 
-        Ward::create($validated);
-
-        return redirect()->route('wards.index')->with('success', 'Ward created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Ward $ward)
-    {
-        $ward->load('department', 'head', 'staff', 'responsibilities');
-        
-        return Inertia::render('Wards/Show', [
-            'ward' => $ward,
+        $ward = Ward::create([
+            'allocationid' => $request->allocationid,
+            'wardNumber' => $request->wardNumber,
+            'wardName' => $request->wardName,
+            'location' => $request->location,
+            'capacity' => $request->capacity,
+            'telExtn' => $request->telExtn,
         ]);
+
+        // Create beds automatically using sp_assign_bed procedure logic
+        for ($i = 1; $i <= $request->capacity; $i++) {
+            Bed::create([
+                'bedNumber' => 'B-' . str_pad($i, 2, '0', STR_PAD_LEFT),
+                'wardNumber' => $ward->wardNumber,
+                'status' => 'Available',
+                'is_occupied' => false,
+            ]);
+        }
+
+        return redirect()->route('my-wards.index')->with('success', 'Ward created successfully!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Ward $ward)
+    public function edit($allocationid)
     {
-        $departments = Department::all();
-        $heads = User::where('role', 'nurse')->orWhere('role', 'head')->get();
-        
-        return Inertia::render('Wards/Edit', [
-            'ward' => $ward,
-            'departments' => $departments,
-            'heads' => $heads,
+        $ward = Ward::findOrFail($allocationid);
+        return Inertia::render('WardManagement/Edit', [
+            'ward' => $ward
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Ward $ward)
+    public function update(Request $request, $allocationid)
     {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'department_id' => 'required|exists:departments,id',
-            'floor' => 'nullable|integer',
-            'capacity' => 'nullable|integer|min:1',
-            'ward_head_id' => 'nullable|exists:users,id',
+        $ward = Ward::findOrFail($allocationid);
+
+        $request->validate([
+            'wardName' => 'required',
+            'capacity' => 'required|integer|min:1',
         ]);
 
-        $ward->update($validated);
+        $ward->update([
+            'wardName' => $request->wardName,
+            'location' => $request->location,
+            'capacity' => $request->capacity,
+            'telExtn' => $request->telExtn,
+        ]);
 
-        return redirect()->route('wards.index')->with('success', 'Ward updated successfully.');
+        return redirect()->route('my-wards.index')->with('success', 'Ward updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Ward $ward)
+    public function destroy($allocationid)
     {
+        $ward = Ward::findOrFail($allocationid);
         $ward->delete();
 
-        return redirect()->route('wards.index')->with('success', 'Ward deleted successfully.');
+        return redirect()->route('my-wards.index')->with('success', 'Ward deleted successfully!');
     }
 }

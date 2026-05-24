@@ -8,6 +8,10 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx',
+        // Add your Blade views for Ward module
+        './resources/views/wards/**/*.blade.php',
+        './resources/views/beds/**/*.blade.php',
+        './resources/views/ward-layout.blade.php',
     ],
 
     theme: {

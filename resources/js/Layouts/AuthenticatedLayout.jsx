@@ -26,11 +26,10 @@ export default function AuthenticatedLayout({ header, children }) {
                 <nav className="flex-1 p-4 space-y-2">
                     <Link
                         href={route('dashboard')}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('dashboard')
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${route().current('dashboard')
                                 ? 'bg-cyan-500'
                                 : 'hover:bg-cyan-500'
-                        }`}
+                            }`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"></path>
@@ -41,11 +40,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
                     <Link
                         href={route('staff.index')}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('staff.index')
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${route().current('staff.index')
                                 ? 'bg-cyan-500'
                                 : 'hover:bg-cyan-500'
-                        }`}
+                            }`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM9 6a3 3 0 11-6 0 3 3 0 016 0zm0 0h6m-6 0h6m-6 0a3 3 0 11-6 0 3 3 0 016 0zm9-6h6a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -56,11 +54,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
                     <Link
                         href={route('patients.index')}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('patients.index') || route().current('patients.create') || route().current('patients.edit')
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${route().current('patients.index') || route().current('patients.create') || route().current('patients.edit')
                                 ? 'bg-cyan-500'
                                 : 'hover:bg-cyan-500'
-                        }`}
+                            }`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM9 6a3 3 0 11-6 0 3 3 0 016 0zm0 0h6m-6 0h6m-6 0a3 3 0 11-6 0 3 3 0 016 0zm9-6h6a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -71,11 +68,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
                     <Link
                         href={route('responsibilities.index')}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('responsibilities.index') || route().current('responsibilities.create') || route().current('responsibilities.edit')
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${route().current('responsibilities.index') || route().current('responsibilities.create') || route().current('responsibilities.edit')
                                 ? 'bg-cyan-500'
                                 : 'hover:bg-cyan-500'
-                        }`}
+                            }`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
@@ -83,6 +79,22 @@ export default function AuthenticatedLayout({ header, children }) {
                         </svg>
                         {sidebarOpen && <span>Responsibilities</span>}
                     </Link>
+
+                    <Link
+                        href={route('my-wards.index')}
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${route().current('my-wards.*')
+                                ? 'bg-cyan-500'
+                                : 'hover:bg-cyan-500'
+                            }`}
+                    >
+                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2v-1H4V4zm14 4V6a2 2 0 00-2-2H4v6h14v-2z" />
+                            <path d="M4 14h14v1a2 2 0 01-2 2H6a2 2 0 01-2-2v-1z" />
+                            <path fillRule="evenodd" d="M7 9a1 1 0 011-1h2a1 1 0 110 2H8a1 1 0 01-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {sidebarOpen && <span>Ward & Bed</span>}
+                    </Link>
+                    
                 </nav>
 
                 {/* Logout Section */}

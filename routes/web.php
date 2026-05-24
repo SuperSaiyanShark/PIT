@@ -8,6 +8,7 @@ use App\Http\Controllers\StaffRoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ResponsibilityController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\BedController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,45 +25,46 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $totalStaff = \App\Models\User::where('staff_type', '!=', null)->count();
     $totalDepartments = \App\Models\Department::count();
-    $totalSupervisors = \App\Models\User::where('staff_role_id', 2)->count(); // Assuming 2 is Supervisor role
-    
-    // Get staff by role
+    $totalSupervisors = \App\Models\User::where('staff_role_id', 2)->count();
+
     $staffByRole = \App\Models\User::with('staffRole')
         ->whereNotNull('staff_role_id')
         ->get()
         ->groupBy('staffRole.name')
         ->map(fn($users) => $users->count());
-    
-    // Get supervisors with their staff count
-    $supervisors = \App\Models\Ward::with('head')
-        ->whereNotNull('ward_head_id')
+
+    $wardsData = \App\Models\Ward::select('allocationid', 'wardName', 'wardNumber', 'capacity')
         ->get()
-        ->groupBy('ward_head_id')
-        ->map(function($wards) {
-            $headId = $wards->first()->ward_head_id;
-            $head = \App\Models\User::find($headId);
-            $staffCount = \App\Models\User::where('ward_id', $wards->pluck('id')->toArray())->count();
-            
+        ->map(function ($ward) {
+            $totalBeds = \App\Models\Bed::where('wardNumber', $ward->wardNumber)->count();
+            $occupiedBeds = \App\Models\Bed::where('wardNumber', $ward->wardNumber)
+                ->where('status', 'Occupied')
+                ->count();
+
             return [
-                'name' => $head?->name ?? 'Unknown',
-                'id' => $headId,
-                'staffCount' => $staffCount,
+                'name' => $ward->wardName,
+                'id' => $ward->allocationid,
+                'wardNumber' => $ward->wardNumber,
+                'totalBeds' => $totalBeds,
+                'occupiedBeds' => $occupiedBeds,
+                'availableBeds' => $totalBeds - $occupiedBeds,
+                'capacity' => $ward->capacity,
+                'staffCount' => $occupiedBeds,
             ];
-        })
-        ->values();
-    
+        });
+
     return Inertia::render('Dashboard', [
         'totalStaff' => $totalStaff,
         'totalDepartments' => $totalDepartments,
         'totalSupervisors' => $totalSupervisors,
         'compliance' => 100,
         'staffByRole' => $staffByRole,
-        'supervisors' => $supervisors,
+        'supervisors' => $wardsData,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Groupmates' Original Routes
 Route::middleware(['auth', 'meadow.staff'])->group(function () {
-    // Staff Management Routes - Define specific routes BEFORE resource route
     Route::get('/staff/by-role/{role}', [StaffController::class, 'byRole'])->name('staff.byRole');
     Route::get('/staff/by-department/{departmentId}', [StaffController::class, 'byDepartment'])->name('staff.byDepartment');
     Route::get('/staff/by-ward/{wardId}', [StaffController::class, 'byWard'])->name('staff.byWard');
@@ -73,32 +75,34 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     Route::post('/staff/{staff}/update-status', [StaffController::class, 'updateStatus'])->name('staff.updateStatus');
     Route::get('/staff/{staff}/schedule', [StaffController::class, 'schedule'])->name('staff.schedule');
     Route::get('/staff/{staff}/responsibilities', [StaffController::class, 'responsibilities'])->name('staff.responsibilities');
-    
-    // Staff Management - Restricted to @meadow.com users only
+
     Route::resource('staff', StaffController::class);
-    
-    // Department Management
     Route::resource('departments', DepartmentController::class);
-    
-    // Ward Management
     Route::resource('wards', WardController::class);
-    
-    // Staff Role Management
     Route::resource('staff-roles', StaffRoleController::class);
-    
-    // Schedule Management
     Route::resource('schedules', ScheduleController::class);
-    
-    // Responsibility Management
     Route::resource('responsibilities', ResponsibilityController::class);
-    
-    // Patient Management
     Route::resource('patients', PatientController::class);
-    
-    // Profile Management
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// ========== YOUR WARD & BEDS MODULE ==========
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Ward routes
+    Route::get('/my-wards', [WardController::class, 'index'])->name('my-wards.index');
+    Route::get('/my-wards/create', [WardController::class, 'create'])->name('my-wards.create');
+    Route::post('/my-wards', [WardController::class, 'store'])->name('my-wards.store');
+    Route::get('/my-wards/{allocationid}/edit', [WardController::class, 'edit'])->name('my-wards.edit');
+    Route::put('/my-wards/{allocationid}', [WardController::class, 'update'])->name('my-wards.update');
+    Route::delete('/my-wards/{allocationid}', [WardController::class, 'destroy'])->name('my-wards.destroy');
+
+    // Bed routes
+    Route::get('/my-wards/{wardNumber}/beds', [BedController::class, 'index'])->name('my-wards.beds');
+    Route::get('/my-wards/{wardNumber}/beds/{bedNumber}/assign', [BedController::class, 'showAssignForm'])->name('my-wards.beds.assign.form');
+    Route::post('/my-wards/{wardNumber}/beds/{bedNumber}/assign', [BedController::class, 'assignPatient'])->name('my-wards.beds.assign');
+    Route::post('/my-wards/{wardNumber}/beds/{bedNumber}/vacate', [BedController::class, 'vacateBed'])->name('my-wards.beds.vacate');
+});
+require __DIR__ . '/auth.php';

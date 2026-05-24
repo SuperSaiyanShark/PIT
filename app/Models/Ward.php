@@ -2,34 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'department_id', 'floor', 'capacity', 'ward_head_id'])]
 class Ward extends Model
 {
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
+    protected $table = 'wards';
+    protected $primaryKey = 'allocationid';
+    public $incrementing = false; // Because allocationid is a string
+    protected $keyType = 'string';
 
-    public function head()
+    protected $fillable = [
+        'allocationid',
+        'wardNumber',
+        'wardName',
+        'location',
+        'capacity',
+        'telExtn'
+    ];
+
+    public $timestamps = false;
+
+    public function beds()
     {
-        return $this->belongsTo(User::class, 'ward_head_id');
+        // 2nd param: the foreign key on the 'beds' table
+        // 3rd param: the local key on the 'wards' table
+        return $this->hasMany(Bed::class, 'wardNumber', 'wardNumber');
     }
 
     public function staff()
     {
-        return $this->hasMany(User::class);
-    }
-
-    public function responsibilities()
-    {
-        return $this->hasMany(Responsibility::class);
+        // Use 'WardID' if that's the pivot column name, or 'wardNumber' if matching ERD
+        return $this->belongsToMany(Staff::class, 'ward_staff_allocation', 'WardID', 'StaffID');
     }
 
     public function patients()
     {
-        return $this->hasMany(Patient::class);
+        // Updated to use the correct case-sensitive column name
+        return $this->belongsToMany(Patient::class, 'patient_allocation', 'wardNumber', 'PatientID');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'allocationid';
     }
 }
