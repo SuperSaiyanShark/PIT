@@ -227,3 +227,4 @@ export default function StaffForm({ staff, departments, wards, staffRoles, onSub
         </form>
     );
 }
+/* Hire Date */
