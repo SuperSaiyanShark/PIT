@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Module3\Http\Controllers;
+namespace Modules\Module3\app\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use app\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class Module3Controller extends Controller
