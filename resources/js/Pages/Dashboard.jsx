@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 
 export default function Dashboard({ totalDepartments, totalStaff, totalSupervisors, compliance, staffByRole, supervisors }) {
     return (
@@ -12,8 +12,9 @@ export default function Dashboard({ totalDepartments, totalStaff, totalSuperviso
         >
             <Head title="Dashboard" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+            {/* Changed py-12 to p-6 or py-6 to work seamlessly inside the new AuthenticatedLayout viewport structure */}
+            <div className="py-6 px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl space-y-6">
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {/* Branches Card */}
@@ -63,7 +64,7 @@ export default function Dashboard({ totalDepartments, totalStaff, totalSuperviso
                                         <div key={supervisor.id || index} className="flex items-center justify-between pb-3 border-b border-gray-100">
                                             <div className="flex items-center space-x-3">
                                                 <div className="w-8 h-8 rounded-full bg-pink-300 flex items-center justify-center text-white text-sm font-semibold">
-                                                    {supervisor.name.charAt(0).toUpperCase()}
+                                                    {supervisor.name ? supervisor.name.charAt(0).toUpperCase() : 'S'}
                                                 </div>
                                                 <div>
                                                     <p className="font-semibold text-sm text-gray-800">{supervisor.name}</p>
@@ -144,6 +145,62 @@ export default function Dashboard({ totalDepartments, totalStaff, totalSuperviso
                                     ))}
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Module3 - Hospital Management Quick Access */}
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Module3 - Hospital Management</h3>
+                        <p className="text-sm text-gray-600 mb-6">Quick access to hospital management features</p>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {/* Departments Button */}
+                            <Link
+                                href={route('departments.index')}
+                                className="flex flex-col items-center justify-center p-6 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition shadow-md"
+                            >
+                                <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                                <span className="font-semibold">Departments</span>
+                                <span className="text-xs opacity-80 mt-1">Manage departments</span>
+                            </Link>
+
+                            {/* Wards & Beds Button */}
+                            <Link
+                                href={route('wards.index')}
+                                className="flex flex-col items-center justify-center p-6 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition shadow-md"
+                            >
+                                <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                </svg>
+                                <span className="font-semibold">Wards & Beds</span>
+                                <span className="text-xs opacity-80 mt-1">Manage beds</span>
+                            </Link>
+
+                            {/* Staff Roles Button */}
+                            <Link
+                                href={route('staff-roles.index')}
+                                className="flex flex-col items-center justify-center p-6 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 transition shadow-md"
+                            >
+                                <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                                <span className="font-semibold">Staff Roles</span>
+                                <span className="text-xs opacity-80 mt-1">Manage roles</span>
+                            </Link>
+
+                            {/* Schedules Button */}
+                            <Link
+                                href={route('schedules.index')}
+                                className="flex flex-col items-center justify-center p-6 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700 transition shadow-md"
+                            >
+                                <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span className="font-semibold">Schedules</span>
+                                <span className="text-xs opacity-80 mt-1">Manage schedules</span>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ return new class extends Migration
 
         // Procedure 1: Schedule patient appointments
         DB::unprepared("
-            CREATE PROCEDURE schedule_patient_appointment(
+            CREATE OR REPLACE PROCEDURE schedule_patient_appointment(
                 IN p_user_id BIGINT,
                 IN p_date DATE,
                 IN p_time TIME,
@@ -35,7 +35,7 @@ return new class extends Migration
 
         // Procedure 2: Record treatments, diagnoses, and procedures
         DB::unprepared("
-            CREATE PROCEDURE record_patient_treatment(
+            CREATE OR REPLACE PROCEDURE record_patient_treatment(
                 IN p_user_id BIGINT,
                 IN p_appointment_id BIGINT,
                 IN p_treatment_name VARCHAR,
@@ -62,7 +62,7 @@ return new class extends Migration
 
         // Procedure 3: Finalize and complete a treatment with clinical notes
         DB::unprepared("
-            CREATE PROCEDURE complete_patient_treatment(
+            CREATE OR REPLACE PROCEDURE complete_patient_treatment(
                 IN p_treatment_id BIGINT,
                 IN p_notes TEXT
             )
@@ -94,7 +94,7 @@ return new class extends Migration
 
         // Function 1: Maintain patient treatment history count
         DB::unprepared("
-            CREATE FUNCTION get_patient_treatment_count(p_user_id BIGINT)
+            CREATE OR REPLACE FUNCTION get_patient_treatment_count(p_user_id BIGINT)
             RETURNS INTEGER
             LANGUAGE plpgsql
             AS $$
@@ -112,7 +112,7 @@ return new class extends Migration
 
         // Function 2: Get total scheduled appointments for a patient on a specific day
         DB::unprepared("
-            CREATE FUNCTION get_patient_daily_appointment_count(p_user_id BIGINT, p_date DATE)
+            CREATE OR REPLACE FUNCTION get_patient_daily_appointment_count(p_user_id BIGINT, p_date DATE)
             RETURNS INTEGER
             LANGUAGE plpgsql
             AS $$
@@ -132,7 +132,7 @@ return new class extends Migration
 
         // Function 3: Check if a patient already has a scheduled treatment at a specific date/time slot
         DB::unprepared("
-            CREATE FUNCTION has_treatment_time_conflict(p_user_id BIGINT, p_date DATE, p_time TIME)
+            CREATE OR REPLACE FUNCTION has_treatment_time_conflict(p_user_id BIGINT, p_date DATE, p_time TIME)
             RETURNS BOOLEAN
             LANGUAGE plpgsql
             AS $$
@@ -159,7 +159,7 @@ return new class extends Migration
 
         // Trigger 1: Prevent scheduling conflicts (Stops double-booking the exact same date and time for a patient)
         DB::unprepared("
-            CREATE FUNCTION check_appointment_time_clash()
+            CREATE OR REPLACE FUNCTION check_appointment_time_clash()
             RETURNS TRIGGER 
             LANGUAGE plpgsql AS $$
             BEGIN
@@ -176,7 +176,7 @@ return new class extends Migration
             END;
             $$;
 
-            CREATE TRIGGER trg_pre_appointment_check
+            CREATE OR REPLACE TRIGGER trg_pre_appointment_check
             BEFORE INSERT ON appointments
             FOR EACH ROW
             EXECUTE FUNCTION check_appointment_time_clash();
@@ -184,7 +184,7 @@ return new class extends Migration
 
         // Trigger 2: Automatically auto-fills missing Treatment Times with the linked Appointment Time
         DB::unprepared("
-            CREATE FUNCTION sync_treatment_time_with_appointment()
+            CREATE OR REPLACE FUNCTION sync_treatment_time_with_appointment()
             RETURNS TRIGGER 
             LANGUAGE plpgsql AS $$
             DECLARE
@@ -201,7 +201,7 @@ return new class extends Migration
             END;
             $$;
 
-            CREATE TRIGGER trg_sync_treatment_time
+            CREATE OR REPLACE TRIGGER trg_sync_treatment_time
             BEFORE INSERT ON treatments
             FOR EACH ROW
             EXECUTE FUNCTION sync_treatment_time_with_appointment();
@@ -209,7 +209,7 @@ return new class extends Migration
 
         // Trigger 3: Audit log or restriction whenever an active treatment is cancelled/altered
         DB::unprepared("
-            CREATE FUNCTION enforce_completed_treatment_protection()
+            CREATE OR REPLACE FUNCTION enforce_completed_treatment_protection()
             RETURNS TRIGGER 
             LANGUAGE plpgsql AS $$
             BEGIN
@@ -220,7 +220,7 @@ return new class extends Migration
             END;
             $$;
 
-            CREATE TRIGGER trg_treatment_status_protection
+            CREATE OR REPLACE TRIGGER trg_treatment_status_protection
             BEFORE UPDATE ON treatments
             FOR EACH ROW
             EXECUTE FUNCTION enforce_completed_treatment_protection();

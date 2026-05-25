@@ -2,8 +2,7 @@
 
 namespace Modules\Module3\app\Http\Controllers;
 
-use app\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Modules\Module3\app\Http\Controllers\Controller;
 
 class Module3Controller extends Controller
 {
