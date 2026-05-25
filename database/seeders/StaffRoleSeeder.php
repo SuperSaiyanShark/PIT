@@ -15,6 +15,11 @@ class StaffRoleSeeder extends Seeder
     {
         $roles = [
             [
+                'name' => 'Ward Head',
+                'description' => 'Ward head/supervisor',
+                'permissions' => ['manage_ward', 'assign_staff', 'view_ward_reports'],
+            ],
+            [
                 'name' => 'Doctor',
                 'description' => 'Medical doctor and physician',
                 'permissions' => ['view_patients', 'prescribe_medication', 'manage_staff'],

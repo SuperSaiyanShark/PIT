@@ -3,11 +3,12 @@
 namespace Modules\Module4\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Patient;
 
 class Appointment extends Model
 {
     protected $fillable = [
-        'user_id',
+        'patient_id',
         'appointment_date',
         'appointment_time',
         'patient_type',
@@ -21,8 +22,8 @@ class Appointment extends Model
         'appointment_time' => 'datetime',
     ];
 
-    public function user()
+    public function patient()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Patient::class);
     }
 }

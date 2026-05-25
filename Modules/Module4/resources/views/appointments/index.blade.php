@@ -118,11 +118,11 @@
             <div>
                 <span class="bg-blue-100 text-blue-800 text-xs font-bold uppercase px-2 py-0.5 rounded">Function 1</span>
                 <h4 class="font-bold text-gray-800 mt-2 text-sm">get_patient_treatment_count()</h4>
-                <p class="text-gray-500 text-xs mt-1 mb-4">Calculates total historic treatment entries registered directly under the targeted user.</p>
+                <p class="text-gray-500 text-xs mt-1 mb-4">Calculates total historic treatment entries registered directly under the targeted patient.</p>
                 
-                <!-- NEW INPUT FIELD FOR USER ID -->
+                <!-- NEW INPUT FIELD FOR PATIENT ID -->
                 <div class="mb-2">
-                    <label class="block text-xs font-bold text-cyan-700 uppercase mb-1">Target User ID</label>
+                    <label class="block text-xs font-bold text-cyan-700 uppercase mb-1">Target Patient ID</label>
                     <input type="number" id="param-user-1" value="{{ auth()->id() }}" class="w-full px-3 py-2 border-2 border-cyan-400 rounded-lg text-sm font-bold bg-white text-gray-900 shadow-sm focus:outline-none focus:border-cyan-600">
                 </div>
             </div>
@@ -139,12 +139,12 @@
             <div>
                 <span class="bg-purple-100 text-purple-800 text-xs font-bold uppercase px-2 py-0.5 rounded">Function 2</span>
                 <h4 class="font-bold text-gray-800 mt-2 text-sm">get_patient_daily_appointment_count()</h4>
-                <p class="text-gray-500 text-xs mt-1 mb-4">Computes ongoing scheduling allocations registered for your target profile for a designated date.</p>
+                <p class="text-gray-500 text-xs mt-1 mb-4">Computes ongoing scheduling allocations registered for your target patient profile for a designated date.</p>
                 
-                <!-- NEW INPUT FIELDS FOR USER ID AND DATE -->
+                <!-- NEW INPUT FIELDS FOR PATIENT ID AND DATE -->
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-xs font-bold text-cyan-700 uppercase mb-1">Target User ID</label>
+                        <label class="block text-xs font-bold text-cyan-700 uppercase mb-1">Target Patient ID</label>
                         <input type="number" id="param-user-2" value="{{ auth()->id() }}" class="w-full px-3 py-2 border-2 border-cyan-400 rounded-lg text-sm font-bold bg-white text-gray-900 shadow-sm focus:outline-none focus:border-cyan-600">
                     </div>
                     <div>
@@ -166,12 +166,12 @@
             <div>
                 <span class="bg-amber-100 text-amber-800 text-xs font-bold uppercase px-2 py-0.5 rounded">Function 3</span>
                 <h4 class="font-bold text-gray-800 mt-2 text-sm">has_treatment_time_conflict()</h4>
-                <p class="text-gray-500 text-xs mt-1 mb-4">Inspects core system registries to establish if a safety booking collision occurs at a precise time block.</p>
+                <p class="text-gray-500 text-xs mt-1 mb-4">Inspects core system registries to establish if a safety booking collision occurs at a precise time block for the target patient.</p>
                 
-                <!-- NEW INPUT FIELDS FOR USER ID, DATE, AND TIME -->
+                <!-- NEW INPUT FIELDS FOR PATIENT ID, DATE, AND TIME -->
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-xs font-bold text-cyan-700 uppercase mb-1">Target User ID</label>
+                        <label class="block text-xs font-bold text-cyan-700 uppercase mb-1">Target Patient ID</label>
                         <input type="number" id="param-user-3" value="{{ auth()->id() }}" class="w-full px-3 py-2 border-2 border-cyan-400 rounded-lg text-sm font-bold bg-white text-gray-900 shadow-sm focus:outline-none focus:border-cyan-600">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
@@ -226,20 +226,20 @@
         }
 
         function runDiagnostic1(baseUrl) {
-            const userId = document.getElementById('param-user-1').value;
+            const patientId = document.getElementById('param-user-1').value;
             const target = document.getElementById('res-treatment-count');
-            fetchDiagnostic(`${baseUrl}?user_id=${userId}`, target, "text-2xl font-black text-cyan-600 mb-2");
+            fetchDiagnostic(`${baseUrl}?patient_id=${patientId}`, target, "text-2xl font-black text-cyan-600 mb-2");
         }
 
         function runDiagnostic2(baseUrl) {
-            const userId = document.getElementById('param-user-2').value;
+            const patientId = document.getElementById('param-user-2').value;
             const date = document.getElementById('param-date-2').value;
             const target = document.getElementById('res-daily-appointments');
-            fetchDiagnostic(`${baseUrl}?user_id=${userId}&date=${date}`, target, "text-2xl font-black text-cyan-600 mb-2");
+            fetchDiagnostic(`${baseUrl}?patient_id=${patientId}&date=${date}`, target, "text-2xl font-black text-cyan-600 mb-2");
         }
 
         function runDiagnostic3(baseUrl) {
-            const userId = document.getElementById('param-user-3').value;
+            const patientId = document.getElementById('param-user-3').value;
             const date = document.getElementById('param-date-3').value;
             let time = document.getElementById('param-time-3').value;
             
@@ -248,7 +248,7 @@
             }
             
             const target = document.getElementById('res-check-conflict');
-            fetchDiagnostic(`${baseUrl}?user_id=${userId}&date=${date}&time=${time}`, target, "text-sm font-bold text-emerald-600 mb-2");
+            fetchDiagnostic(`${baseUrl}?patient_id=${patientId}&date=${date}&time=${time}`, target, "text-sm font-bold text-emerald-600 mb-2");
         }
     </script>
 </x-app-layout>

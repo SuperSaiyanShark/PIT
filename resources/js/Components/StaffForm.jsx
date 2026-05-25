@@ -9,7 +9,7 @@ export default function StaffForm({ staff, departments, wards, staffRoles, onSub
         name: staff?.name || '',
         email: staff?.email || '',
         role: staff?.role || '',
-        staff_type: staff?.staff_type || 'nurse', // doctor, nurse, admin
+        staff_type: staff?.staff_type || 'doctor', // doctor, nurse, admin
         department_id: staff?.department_id || '',
         ward_id: staff?.ward_id || '',
         staff_role_id: staff?.staff_role_id || '',
@@ -79,11 +79,10 @@ export default function StaffForm({ staff, departments, wards, staffRoles, onSub
                     <select
                         id="staff_type"
                         name="staff_type"
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 font-semibold text-gray-800"
                         value={formData.staff_type}
                         onChange={handleChange}
                     >
-                        <option value="">Select Type</option>
                         <option value="doctor">Doctor</option>
                         <option value="nurse">Nurse</option>
                         <option value="admin">Administrative Staff</option>
@@ -145,21 +144,26 @@ export default function StaffForm({ staff, departments, wards, staffRoles, onSub
 
                 {/* Staff Role */}
                 <div>
-                    <InputLabel htmlFor="staff_role_id" value="Staff Role" />
+                    <InputLabel htmlFor="staff_role_id" value="Staff Role (Position/Specialization)" />
                     <select
                         id="staff_role_id"
                         name="staff_role_id"
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+                        className="mt-1 block w-full border-2 border-cyan-300 rounded-md shadow-sm focus:border-cyan-500 focus:ring-cyan-500 font-semibold text-gray-800"
                         value={formData.staff_role_id}
                         onChange={handleChange}
                     >
-                        <option value="">Select Role</option>
-                        {staffRoles.map(role => (
-                            <option key={role.id} value={role.id}>
-                                {role.name}
-                            </option>
-                        ))}
+                        <option value="">Select Role/Position</option>
+                        {staffRoles && staffRoles.length > 0 ? (
+                            staffRoles.map(role => (
+                                <option key={role.id} value={role.id}>
+                                    {role.name}
+                                </option>
+                            ))
+                        ) : (
+                            <option disabled>No roles available</option>
+                        )}
                     </select>
+                    {errors.staff_role_id && <InputError message={errors.staff_role_id} />}
                 </div>
 
                 {/* Phone */}

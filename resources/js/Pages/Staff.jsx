@@ -135,7 +135,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
 
                 {/* Search and Filter Section */}
                 <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                    <div className="flex flex-col md:flex-row gap-4 items-end">
+                    <div className="flex flex-col md:flex-row gap-4 items-end mb-4">
                         {/* Search Input */}
                         <div className="flex-1 min-w-0">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
@@ -187,6 +187,17 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                                 </svg>
                             </button>
                         </div>
+
+                        {/* Add Staff Button */}
+                        <button
+                            onClick={handleCreateStaff}
+                            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors flex items-center gap-2 whitespace-nowrap"
+                        >
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd"></path>
+                            </svg>
+                            Add Staff
+                        </button>
                     </div>
 
                     {/* Results Summary */}
@@ -200,7 +211,12 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                     view === 'grid' ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {filteredStaff.map(member => (
-                                <StaffCard key={member.id} staff={member} />
+                                <StaffCard 
+                                    key={member.id} 
+                                    staff={member}
+                                    onEdit={handleEditStaff}
+                                    onDelete={handleDeleteStaff}
+                                />
                             ))}
                         </div>
                     ) : (
@@ -210,7 +226,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                                     <tr>
                                         <th className="px-6 py-3 text-left text-sm font-semibold">Name</th>
                                         <th className="px-6 py-3 text-left text-sm font-semibold">Type</th>
-                                        <th className="px-6 py-3 text-left text-sm font-semibold">Role</th>
+                                        <th className="px-6 py-3 text-left text-sm font-semibold">Role/Position</th>
                                         <th className="px-6 py-3 text-left text-sm font-semibold">Department</th>
                                         <th className="px-6 py-3 text-left text-sm font-semibold">Email</th>
                                         <th className="px-6 py-3 text-left text-sm font-semibold">Actions</th>
@@ -221,39 +237,48 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                                         const deptName = typeof member.department === 'object' && member.department 
                                             ? member.department.name 
                                             : member.department || 'N/A';
+                                        const roleName = member.staffRole?.name || member.role || 'N/A';
                                         return (
                                             <tr key={member.id} className="hover:bg-gray-50">
                                                 <td className="px-6 py-4 text-sm font-medium text-gray-900">{member.name}</td>
-                                                <td className="px-6 py-4 text-sm text-gray-600">
-                                                    <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                                <td className="px-6 py-4 text-sm">
+                                                    <span className={`inline-block ${
+                                                        member.staff_type === 'doctor' ? 'bg-blue-100 text-blue-800' :
+                                                        member.staff_type === 'nurse' ? 'bg-pink-100 text-pink-800' :
+                                                        'bg-purple-100 text-purple-800'
+                                                    } px-3 py-1 rounded-full text-xs font-bold uppercase`}>
                                                         {member.staff_type || 'Staff'}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-gray-600">{member.role || 'N/A'}</td>
+                                                <td className="px-6 py-4 text-sm">
+                                                    <span className="inline-block bg-cyan-50 text-cyan-700 border border-cyan-200 px-3 py-1 rounded font-semibold">
+                                                        {roleName}
+                                                    </span>
+                                                </td>
                                                 <td className="px-6 py-4 text-sm text-gray-600">{deptName}</td>
                                                 <td className="px-6 py-4 text-sm text-gray-600">{member.email}</td>
                                                 <td className="px-6 py-4 text-sm space-x-2 flex">
                                                     <button
                                                         onClick={() => handleEditStaff(member)}
-                                                        className="text-cyan-600 hover:text-cyan-900 font-medium"
+                                                        className="text-cyan-600 hover:text-cyan-900 font-medium hover:underline"
                                                     >
                                                         Edit
                                                     </button>
                                                     <button
                                                         onClick={() => handleAddSchedule(member)}
-                                                        className="text-green-600 hover:text-green-900 font-medium"
+                                                        className="text-green-600 hover:text-green-900 font-medium hover:underline"
                                                     >
                                                         Schedule
                                                     </button>
                                                     <button
                                                         onClick={() => handleAddResponsibility(member)}
-                                                        className="text-purple-600 hover:text-purple-900 font-medium"
+                                                        className="text-purple-600 hover:text-purple-900 font-medium hover:underline"
                                                     >
                                                         Tasks
                                                     </button>
                                                     <button
                                                         onClick={() => handleDeleteStaff(member.id)}
-                                                        className="text-red-600 hover:text-red-900 font-medium"
+                                                        className="text-red-600 hover:text-red-900 font-medium hover:underline"
                                                     >
                                                         Delete
                                                     </button>
@@ -268,6 +293,12 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                 ) : (
                     <div className="text-center py-12 bg-white rounded-lg shadow-md">
                         <p className="text-gray-600 text-lg">No staff members found matching your search.</p>
+                        <button
+                            onClick={handleCreateStaff}
+                            className="mt-4 px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors"
+                        >
+                            Add First Staff Member
+                        </button>
                     </div>
                 )}
 

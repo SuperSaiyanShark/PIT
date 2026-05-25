@@ -17,7 +17,8 @@ class WardController extends Controller
     {
         $wards = Ward::with('department', 'head', 'staff')->get();
         
-        return Inertia::render('Wards/Index', [
+        // FIXED: Pointed directly to your Module3/WardManagement view directory
+        return Inertia::render('Module3/WardManagement/Index', [
             'wards' => $wards,
         ]);
     }
@@ -28,9 +29,13 @@ class WardController extends Controller
     public function create()
     {
         $departments = Department::all();
-        $heads = User::where('role', 'nurse')->orWhere('role', 'head')->get();
+        // Get staff with Ward Head role (staff_role_id = 1, which is Ward Head)
+        $heads = User::whereHas('staffRole', function ($query) {
+            $query->where('name', 'Ward Head');
+        })->get();
         
-        return Inertia::render('Wards/Create', [
+        // FIXED: Pointed directly to your Module3/WardManagement view directory
+        return Inertia::render('Module3/WardManagement/Create', [
             'departments' => $departments,
             'heads' => $heads,
         ]);
@@ -61,7 +66,8 @@ class WardController extends Controller
     {
         $ward->load('department', 'head', 'staff', 'responsibilities');
         
-        return Inertia::render('Wards/Show', [
+        // FIXED: Pointed directly to your Module3/WardManagement view directory
+        return Inertia::render('Module3/WardManagement/Show', [
             'ward' => $ward,
         ]);
     }
@@ -72,9 +78,13 @@ class WardController extends Controller
     public function edit(Ward $ward)
     {
         $departments = Department::all();
-        $heads = User::where('role', 'nurse')->orWhere('role', 'head')->get();
+        // Get staff with Ward Head role (staff_role_id = 1, which is Ward Head)
+        $heads = User::whereHas('staffRole', function ($query) {
+            $query->where('name', 'Ward Head');
+        })->get();
         
-        return Inertia::render('Wards/Edit', [
+        // FIXED: Pointed directly to your Module3/WardManagement view directory
+        return Inertia::render('Module3/WardManagement/Edit', [
             'ward' => $ward,
             'departments' => $departments,
             'heads' => $heads,

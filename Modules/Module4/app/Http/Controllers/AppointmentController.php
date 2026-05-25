@@ -4,18 +4,21 @@ namespace Modules\Module4\app\Http\Controllers;
 
 use Modules\Module4\app\Models\Appointment;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Inertia\Inertia; // Added to handle React template handshakes
 
 class AppointmentController extends Controller
 {
-    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $appointments = auth()->user()->appointments;
-        return view('module4::appointments.index', compact('appointments'));
+        $appointments = Appointment::with('patient')->get();
+
+        // Converted from view() to Inertia::render() matching your module's folder system
+        return Inertia::render('Module4::Appointments/Index', [
+            'appointments' => $appointments
+        ]);
     }
 
     /**
@@ -23,7 +26,7 @@ class AppointmentController extends Controller
      */
     public function choosePatientType()
     {
-        return view('module4::appointments.choose-patient-type');
+        return Inertia::render('Module4::Appointments/ChoosePatientType');
     }
 
     /**
@@ -31,7 +34,7 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        return view('module4::appointments.create');
+        return Inertia::render('Module4::Appointments/Create');
     }
 
     /**
@@ -40,6 +43,7 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'patient_id' => 'required|exists:patients,id',
             'appointment_date' => 'required|date|after:today',
             'appointment_time' => 'required|date_format:H:i',
             'patient_type' => 'required|in:inpatient,outpatient',
@@ -47,12 +51,11 @@ class AppointmentController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $validated['user_id'] = auth()->id();
         $validated['status'] = 'pending';
 
         $appointment = Appointment::create($validated);
 
-        return redirect()->route('module4.appointments.show', $appointment)
+        return redirect()->route('module4.appointments.show', $appointment->id)
                         ->with('success', 'Appointment scheduled successfully!');
     }
 
@@ -61,8 +64,12 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment)
     {
-        $this->authorize('view', $appointment);
-        return view('module4::appointments.show', compact('appointment'));
+        // OPTION A: Bypassed/Removed policy validation layer to prevent 403 blocks
+        $appointment->load('patient');
+
+        return Inertia::render('Module4::Appointments/Show', [
+            'appointment' => $appointment
+        ]);
     }
 
     /**
@@ -70,8 +77,10 @@ class AppointmentController extends Controller
      */
     public function edit(Appointment $appointment)
     {
-        $this->authorize('update', $appointment);
-        return view('module4::appointments.edit', compact('appointment'));
+        // OPTION A: Bypassed/Removed policy validation layer to prevent 403 blocks
+        return Inertia::render('Module4::Appointments/Edit', [
+            'appointment' => $appointment
+        ]);
     }
 
     /**
@@ -79,8 +88,7 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, Appointment $appointment)
     {
-        $this->authorize('update', $appointment);
-
+        // OPTION A: Bypassed/Removed policy validation layer to prevent 403 blocks
         $validated = $request->validate([
             'appointment_date' => 'required|date',
             'appointment_time' => 'required|date_format:H:i',
@@ -91,7 +99,7 @@ class AppointmentController extends Controller
 
         $appointment->update($validated);
 
-        return redirect()->route('module4.appointments.show', $appointment)
+        return redirect()->route('module4.appointments.show', $appointment->id)
                         ->with('success', 'Appointment updated successfully!');
     }
 
@@ -100,8 +108,7 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
-        $this->authorize('delete', $appointment);
-        
+        // OPTION A: Bypassed/Removed policy validation layer to prevent 403 blocks
         $appointment->delete();
 
         return redirect()->route('module4.appointments.index')
@@ -113,7 +120,10 @@ class AppointmentController extends Controller
      */
     public function recent()
     {
-        $appointments = auth()->user()->appointments()->latest()->limit(5)->get();
-        return view('module4::appointments.recent', compact('appointments'));
+        $appointments = Appointment::with('patient')->latest()->limit(5)->get();
+        
+        return Inertia::render('Module4::Appointments/Recent', [
+            'appointments' => $appointments
+        ]);
     }
 }

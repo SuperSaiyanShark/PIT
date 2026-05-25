@@ -3,12 +3,15 @@
 namespace Modules\Module4\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Patient;
+use App\Models\User;
 
 class Treatment extends Model
 {
     protected $fillable = [
-        'user_id',
+        'patient_id',
         'appointment_id',
+        'user_id',
         'treatment_name',
         'description',
         'treatment_date',
@@ -22,13 +25,18 @@ class Treatment extends Model
         'treatment_time' => 'time',
     ];
 
-    public function user()
+    public function patient()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Patient::class);
     }
 
     public function appointment()
     {
         return $this->belongsTo(Appointment::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

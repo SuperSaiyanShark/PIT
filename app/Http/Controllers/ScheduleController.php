@@ -16,7 +16,8 @@ class ScheduleController extends Controller
     {
         $schedules = Schedule::with('staff')->get();
         
-        return Inertia::render('Schedules/Index', [
+        // FIXED: Pointed directly to the Module3 view subfolder
+        return Inertia::render('Module3/Schedules/Index', [
             'schedules' => $schedules,
         ]);
     }
@@ -28,7 +29,8 @@ class ScheduleController extends Controller
     {
         $staff = User::where('status', 'active')->get();
         
-        return Inertia::render('Schedules/Create', [
+        // FIXED: Pointed directly to the Module3 view subfolder
+        return Inertia::render('Module3/Schedules/Create', [
             'staff' => $staff,
         ]);
     }
@@ -36,21 +38,25 @@ class ScheduleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
+        // Adjusted validation rules to match input types from your Create.jsx
         $validated = $request->validate([
-            'staff_id' => 'required|exists:users,id',
-            'day_of_week' => 'nullable|string',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
+            'staff_id'   => 'required|exists:users,id',
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after:start_date',
             'shift_type' => 'nullable|in:morning,afternoon,night',
-            'status' => 'nullable|in:active,inactive,pending',
-            'notes' => 'nullable|string',
+            'status'     => 'nullable|in:active,inactive,pending',
+            'notes'      => 'nullable|string',
         ]);
 
         Schedule::create($validated);
 
-        return back()->with('success', 'Schedule added successfully.');
+        // FIXED: Redirects to index list page instead of stuck on the form
+        return redirect()->route('schedules.index')->with('success', 'Schedule added successfully.');
     }
 
     /**
@@ -60,7 +66,8 @@ class ScheduleController extends Controller
     {
         $schedule->load('staff');
         
-        return Inertia::render('Schedules/Show', [
+        // FIXED: Pointed directly to the Module3 view subfolder
+        return Inertia::render('Module3/Schedules/Show', [
             'schedule' => $schedule,
         ]);
     }
@@ -72,7 +79,8 @@ class ScheduleController extends Controller
     {
         $staff = User::where('status', 'active')->get();
         
-        return Inertia::render('Schedules/Edit', [
+        // FIXED: Pointed directly to the Module3 view subfolder
+        return Inertia::render('Module3/Schedules/Edit', [
             'schedule' => $schedule,
             'staff' => $staff,
         ]);

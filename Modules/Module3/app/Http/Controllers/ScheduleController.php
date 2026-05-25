@@ -6,6 +6,7 @@ use Modules\Module3\app\Models\Schedule;
 use Modules\Module3\app\Models\User;
 use Modules\Module3\app\Models\Department;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ScheduleController extends Controller
 {
@@ -13,8 +14,8 @@ class ScheduleController extends Controller
     {
         $schedules = Schedule::with('staff')->get();
         
-        // FIXED: Change Inertia::render to traditional blade views
-        return view('module3::schedules.index', [
+        // Forces lookup directly to: ./Pages/Module3/Schedules/Index.jsx
+        return Inertia::render('Module3::Schedules/Index', [
             'schedules' => $schedules,
         ]);
     }
@@ -24,8 +25,8 @@ class ScheduleController extends Controller
         $staff = User::where('status', 'active')->get();
         $departments = Department::all();
         
-        // FIXED: Change Inertia::render to traditional blade views
-        return view('module3::schedules.create', [
+        // Forces lookup directly to: ./Pages/Module3/Schedules/Create.jsx
+        return Inertia::render('Module3::Schedules/Create', [
             'staff' => $staff,
             'departments' => $departments,
         ]);
@@ -51,8 +52,8 @@ class ScheduleController extends Controller
     {
         $schedule->load('staff');
         
-        // FIXED: Change Inertia::render to traditional blade views
-        return view('module3::schedules.show', [
+        // Forces lookup directly to: ./Pages/Module3/Schedules/Show.jsx
+        return Inertia::render('Module3::Schedules/Show', [
             'schedule' => $schedule,
         ]);
     }
@@ -62,8 +63,8 @@ class ScheduleController extends Controller
         $staff = User::where('status', 'active')->get();
         $departments = Department::all();
         
-        // FIXED: Change Inertia::render to traditional blade views
-        return view('module3::schedules.edit', [
+        // Forces lookup directly to: ./Pages/Module3/Schedules/Edit.jsx
+        return Inertia::render('Module3::Schedules/Edit', [
             'schedule' => $schedule,
             'staff' => $staff,
             'departments' => $departments,

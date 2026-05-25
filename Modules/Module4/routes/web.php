@@ -22,39 +22,46 @@ Route::middleware('auth')->group(function () {
 
 // Appointment, Treatment, and Staff resource routing
 Route::middleware('auth')->group(function () {
-    Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+    
+    // 1. Static Custom Routes FIRST (Always register these before wildcard / id parameters)
     Route::get('/appointments/choose-type', [AppointmentController::class, 'choosePatientType'])->name('appointments.choose-patient-type');
     Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+    Route::get('/appointments/recent', [AppointmentController::class, 'recent'])->name('appointments.recent'); 
+    
+    // 2. Standard CRUD Core Actions
+    Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+    
+    // 3. Wildcard Parameter Routes LAST
     Route::get('/appointments/{appointment}', [AppointmentController::class, 'show'])->name('appointments.show');
     Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
     Route::patch('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
     Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
-    Route::get('/treatments/recent', [AppointmentController::class, 'recent'])->name('appointments.recent');
     
-    Route::resource('treatments', TreatmentController::class);
-    Route::resource('staff', StaffController::class);
+    // Fallback resource configurations matching your layout module prefixes
+    Route::resource('treatments', TreatmentController::class)->names('treatments');
+    Route::resource('staff', StaffController::class)->names('staff');
 
-    // Diagnostics Panel Enpoints
+    // Diagnostics Panel Endpoints
     Route::prefix('diagnostics')->group(function () {
         Route::get('/treatment-count', function (Request $request) {
-            $userId = $request->query('user_id', auth()->id());
-            $result = DB::select("SELECT get_patient_treatment_count(?) AS total", [$userId]);
+            $patientId = $request->query('patient_id', auth()->id());
+            $result = DB::select("SELECT get_patient_treatment_count(?) AS total", [$patientId]);
             return response()->json(['value' => $result[0]->total ?? 0]);
         })->name('diagnostics.treatment-count');
 
         Route::get('/daily-appointments', function (Request $request) {
-            $userId = $request->query('user_id', auth()->id());
+            $patientId = $request->query('patient_id', auth()->id());
             $date = $request->query('date', now()->toDateString());
-            $result = DB::select("SELECT get_patient_daily_appointment_count(?, ?) AS total", [$userId, $date]);
+            $result = DB::select("SELECT get_patient_daily_appointment_count(?, ?) AS total", [$patientId, $date]);
             return response()->json(['value' => $result[0]->total ?? 0]);
         })->name('diagnostics.daily-appointments');
 
         Route::get('/check-conflict', function (Request $request) {
-            $userId = $request->query('user_id', auth()->id());
+            $patientId = $request->query('patient_id', auth()->id());
             $date = $request->query('date', now()->toDateString());
             $time = $request->query('time', '10:00:00');
-            $result = DB::select("SELECT has_treatment_time_conflict(?, ?, ?) AS conflict", [$userId, $date, $time]);
+            $result = DB::select("SELECT has_treatment_time_conflict(?, ?, ?) AS conflict", [$patientId, $date, $time]);
             return response()->json(['value' => $result[0]->conflict ? 'Conflict Detected ⚠️' : 'Time Slot Clear ']);
         })->name('diagnostics.check-conflict');
     });

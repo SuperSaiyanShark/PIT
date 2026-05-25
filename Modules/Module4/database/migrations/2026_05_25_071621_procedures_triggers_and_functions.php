@@ -18,7 +18,7 @@ return new class extends Migration
         // Procedure 1: Schedule patient appointments
         DB::unprepared("
             CREATE OR REPLACE PROCEDURE schedule_patient_appointment(
-                IN p_user_id BIGINT,
+                IN p_patient_id BIGINT,
                 IN p_date DATE,
                 IN p_time TIME,
                 IN p_patient_type VARCHAR,
@@ -27,8 +27,8 @@ return new class extends Migration
             LANGUAGE plpgsql
             AS $$
             BEGIN
-                INSERT INTO appointments (user_id, appointment_date, appointment_time, patient_type, reason_for_visit, status, created_at, updated_at)
-                VALUES (p_user_id, p_date, p_time, p_patient_type, p_reason, 'pending', NOW(), NOW());
+                INSERT INTO appointments (patient_id, appointment_date, appointment_time, patient_type, reason_for_visit, status, created_at, updated_at)
+                VALUES (p_patient_id, p_date, p_time, p_patient_type, p_reason, 'pending', NOW(), NOW());
             END;
             $$;
         ");
@@ -36,7 +36,7 @@ return new class extends Migration
         // Procedure 2: Record treatments, diagnoses, and procedures
         DB::unprepared("
             CREATE OR REPLACE PROCEDURE record_patient_treatment(
-                IN p_user_id BIGINT,
+                IN p_patient_id BIGINT,
                 IN p_appointment_id BIGINT,
                 IN p_treatment_name VARCHAR,
                 IN p_description TEXT,
@@ -47,8 +47,8 @@ return new class extends Migration
             AS $$
             BEGIN
                 -- Insert the treatment record
-                INSERT INTO treatments (user_id, appointment_id, treatment_name, description, treatment_date, treatment_time, status, created_at, updated_at)
-                VALUES (p_user_id, p_appointment_id, p_treatment_name, p_description, p_date, p_time, 'scheduled', NOW(), NOW());
+                INSERT INTO treatments (patient_id, appointment_id, treatment_name, description, treatment_date, treatment_time, status, created_at, updated_at)
+                VALUES (p_patient_id, p_appointment_id, p_treatment_name, p_description, p_date, p_time, 'scheduled', NOW(), NOW());
 
                 -- Automatically update the corresponding appointment status to 'confirmed' or 'completed'
                 IF p_appointment_id IS NOT NULL THEN
@@ -94,7 +94,7 @@ return new class extends Migration
 
         // Function 1: Maintain patient treatment history count
         DB::unprepared("
-            CREATE OR REPLACE FUNCTION get_patient_treatment_count(p_user_id BIGINT)
+            CREATE OR REPLACE FUNCTION get_patient_treatment_count(p_patient_id BIGINT)
             RETURNS INTEGER
             LANGUAGE plpgsql
             AS $$
@@ -103,7 +103,7 @@ return new class extends Migration
             BEGIN
                 SELECT COUNT(*) INTO v_count
                 FROM treatments
-                WHERE user_id = p_user_id;
+                WHERE patient_id = p_patient_id;
                 
                 RETURN v_count;
             END;
@@ -112,7 +112,7 @@ return new class extends Migration
 
         // Function 2: Get total scheduled appointments for a patient on a specific day
         DB::unprepared("
-            CREATE OR REPLACE FUNCTION get_patient_daily_appointment_count(p_user_id BIGINT, p_date DATE)
+            CREATE OR REPLACE FUNCTION get_patient_daily_appointment_count(p_patient_id BIGINT, p_date DATE)
             RETURNS INTEGER
             LANGUAGE plpgsql
             AS $$
@@ -121,7 +121,7 @@ return new class extends Migration
             BEGIN
                 SELECT COUNT(*) INTO v_count
                 FROM appointments
-                WHERE user_id = p_user_id 
+                WHERE patient_id = p_patient_id 
                   AND appointment_date = p_date
                   AND status != 'cancelled';
                 
@@ -132,7 +132,7 @@ return new class extends Migration
 
         // Function 3: Check if a patient already has a scheduled treatment at a specific date/time slot
         DB::unprepared("
-            CREATE OR REPLACE FUNCTION has_treatment_time_conflict(p_user_id BIGINT, p_date DATE, p_time TIME)
+            CREATE OR REPLACE FUNCTION has_treatment_time_conflict(p_patient_id BIGINT, p_date DATE, p_time TIME)
             RETURNS BOOLEAN
             LANGUAGE plpgsql
             AS $$
@@ -141,7 +141,7 @@ return new class extends Migration
             BEGIN
                 SELECT EXISTS(
                     SELECT 1 FROM treatments
-                    WHERE user_id = p_user_id
+                    WHERE patient_id = p_patient_id
                       AND treatment_date = p_date
                       AND treatment_time = p_time
                       AND status != 'completed'
@@ -165,7 +165,7 @@ return new class extends Migration
             BEGIN
                 IF EXISTS (
                     SELECT 1 FROM appointments 
-                    WHERE user_id = NEW.user_id 
+                    WHERE patient_id = NEW.patient_id 
                       AND appointment_date = NEW.appointment_date
                       AND appointment_time = NEW.appointment_time
                       AND status NOT IN ('cancelled', 'completed')

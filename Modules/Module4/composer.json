@@ -1,5 +1,5 @@
 {
-    "name": "nwidart/projectb",
+    "name": "nwidart/module4",
     "description": "",
     "authors": [
         {
@@ -17,14 +17,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Modules\\ProjectB\\": "app/",
-            "Modules\\ProjectB\\Database\\Factories\\": "database/factories/",
-            "Modules\\ProjectB\\Database\\Seeders\\": "database/seeders/"
+            "Modules\\Module4\\": "app/",
+            "Modules\\Module4\\Database\\Factories\\": "database/factories/",
+            "Modules\\Module4\\Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Modules\\ProjectB\\Tests\\": "tests/"
+            "Modules\\Module4\\Tests\\": "tests/"
         }
     }
 }

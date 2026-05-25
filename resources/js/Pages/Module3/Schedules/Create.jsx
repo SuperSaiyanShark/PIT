@@ -84,13 +84,29 @@ export default function SchedulesCreate({ staff }) {
                                     {errors.shift_type && <div className="text-red-600 text-sm mt-1">{errors.shift_type}</div>}
                                 </div>
 
-                                <button
-                                    type="submit"
-                                    disabled={processing}
-                                    className="px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700 disabled:opacity-50 transition-colors"
-                                >
-                                    Create Schedule
-                                </button>
+                                <div className="flex flex-col space-y-4">
+                                    <div>
+                                        <button
+                                            type="submit"
+                                            disabled={processing}
+                                            className="px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700 disabled:opacity-50 transition-colors"
+                                        >
+                                            {processing ? 'Creating...' : 'Create Schedule'}
+                                        </button>
+                                    </div>
+
+                                    {/* DYNAMIC ERROR SUMMARY BANNER */}
+                                    {Object.keys(errors).length > 0 && (
+                                        <div className="p-4 bg-red-50 text-red-700 rounded border border-red-200">
+                                            <p className="font-semibold">Please resolve the following submission errors:</p>
+                                            <ul className="list-disc pl-5 mt-1 text-sm">
+                                                {Object.keys(errors).map((key) => (
+                                                    <li key={key}>{errors[key]}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
                             </form>
                         </div>
                     </div>

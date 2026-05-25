@@ -75,7 +75,7 @@ class User extends Authenticatable
 
     public function treatments()
     {
-        return $this->hasMany(\Modules\Module4\app\Models\Treatment::class);
+        return $this->hasMany(\Modules\Module4\app\Models\Treatment::class, 'user_id');
     }
 
     /**
