@@ -2,65 +2,45 @@
 
 namespace Database\Seeders;
 
-use App\Models\Ward;
-use App\Models\Department;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class WardSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $cardiology = Department::where('name', 'Cardiology')->first();
-        $neurology = Department::where('name', 'Neurology')->first();
-        $orthopedics = Department::where('name', 'Orthopedics')->first();
-        $emergency = Department::where('name', 'Emergency')->first();
-        $pediatrics = Department::where('name', 'Pediatrics')->first();
+        // Check if wards already have data
+        if (DB::table('wards')->count() > 0) {
+            $this->command->info('Wards already seeded, skipping.');
+            return;
+        }
+
+        // Get department IDs — adjust if your departments table has different names
+        $depts = DB::table('departments')->pluck('id', 'name');
 
         $wards = [
-            [
-                'name' => 'Cardiac ICU',
-                'department_id' => $cardiology->id,
-                'floor' => 3,
-                'capacity' => 10,
-            ],
-            [
-                'name' => 'General Cardiology',
-                'department_id' => $cardiology->id,
-                'floor' => 2,
-                'capacity' => 20,
-            ],
-            [
-                'name' => 'Neurology Ward',
-                'department_id' => $neurology->id,
-                'floor' => 4,
-                'capacity' => 15,
-            ],
-            [
-                'name' => 'Orthopedic Ward',
-                'department_id' => $orthopedics->id,
-                'floor' => 2,
-                'capacity' => 25,
-            ],
-            [
-                'name' => 'Emergency Trauma',
-                'department_id' => $emergency->id,
-                'floor' => 1,
-                'capacity' => 30,
-            ],
-            [
-                'name' => 'Pediatric Ward',
-                'department_id' => $pediatrics->id,
-                'floor' => 5,
-                'capacity' => 20,
-            ],
+            ['name' => 'General Medicine Ward',  'floor' => 'A Block, Floor 1', 'capacity' => 24],
+            ['name' => 'Surgical Ward',          'floor' => 'B Block, Floor 1', 'capacity' => 20],
+            ['name' => 'Pediatric Ward',         'floor' => 'C Block, Floor 1', 'capacity' => 18],
+            ['name' => 'Maternity Ward',         'floor' => 'D Block, Floor 1', 'capacity' => 16],
+            ['name' => 'Orthopedic Ward',        'floor' => 'E Block, Floor 2', 'capacity' => 20],
+            ['name' => 'Cardiology Ward',        'floor' => 'F Block, Floor 2', 'capacity' => 16],
+            ['name' => 'Neurology Ward',         'floor' => 'G Block, Floor 3', 'capacity' => 14],
+            ['name' => 'Geriatric Ward',         'floor' => 'H Block, Floor 1', 'capacity' => 24],
+            ['name' => 'Emergency Ward',         'floor' => 'A Block, Ground',  'capacity' => 20],
+            ['name' => 'Out-Patient Clinic',     'floor' => 'Main Bldg, GF',    'capacity' => 28],
         ];
 
         foreach ($wards as $ward) {
-            Ward::create($ward);
+            DB::table('wards')->insertOrIgnore([
+                'name'       => $ward['name'],
+                'floor'      => $ward['floor'],
+                'capacity'   => $ward['capacity'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
+
+        $this->command->info('Wards seeded successfully.');
     }
 }
