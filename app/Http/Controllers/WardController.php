@@ -51,7 +51,7 @@ class WardController extends Controller
         for ($i = 1; $i <= $request->capacity; $i++) {
             Bed::create([
                 'bedNumber' => 'B-' . str_pad($i, 2, '0', STR_PAD_LEFT),
-                'wardNumber' => $ward->wardNumber,
+                'wardNumber' => $ward->wardNumber, // This should be the new ward's number
                 'status' => 'Available',
                 'is_occupied' => false,
             ]);

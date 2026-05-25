@@ -13,7 +13,9 @@ class BedController extends Controller
     public function index($wardNumber)
     {
         $ward = Ward::where('wardNumber', $wardNumber)->firstOrFail();
-        $beds = Bed::where('wardNumber', $wardNumber)->get();
+        $beds = Bed::where('wardNumber', $wardNumber)
+            ->orderBy('bedNumber', 'asc')
+            ->get();
 
         return Inertia::render('WardManagement/Beds', [
             'ward' => $ward,

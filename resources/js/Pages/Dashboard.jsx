@@ -56,14 +56,14 @@ export default function Dashboard({ totalDepartments, totalStaff, totalSuperviso
                         <div className="bg-white rounded-lg shadow-md p-6">
                             <h3 className="text-lg font-semibold text-gray-800 mb-4">Supervisor Group Capacity</h3>
                             <div className="text-xs text-gray-500 mb-4">5-10 per group</div>
-                            
+
                             <div className="space-y-3">
                                 {supervisors && supervisors.length > 0 ? (
                                     supervisors.map((supervisor, index) => (
                                         <div key={supervisor.id || index} className="flex items-center justify-between pb-3 border-b border-gray-100">
                                             <div className="flex items-center space-x-3">
                                                 <div className="w-8 h-8 rounded-full bg-pink-300 flex items-center justify-center text-white text-sm font-semibold">
-                                                    {supervisor.name.charAt(0).toUpperCase()}
+                                                    {supervisor.name ? supervisor.name.charAt(0).toUpperCase() : '?'}
                                                 </div>
                                                 <div>
                                                     <p className="font-semibold text-sm text-gray-800">{supervisor.name}</p>
@@ -72,8 +72,8 @@ export default function Dashboard({ totalDepartments, totalStaff, totalSuperviso
                                             </div>
                                             <div className="flex items-center space-x-2">
                                                 <div className="w-24 h-2 bg-gray-200 rounded-full">
-                                                    <div 
-                                                        className="h-full bg-red-900 rounded-full" 
+                                                    <div
+                                                        className="h-full bg-red-900 rounded-full"
                                                         style={{ width: `${Math.min((supervisor.staffCount / 10) * 100, 100)}%` }}
                                                     ></div>
                                                 </div>
@@ -95,7 +95,7 @@ export default function Dashboard({ totalDepartments, totalStaff, totalSuperviso
                             <div className="bg-white rounded-lg shadow-md p-6">
                                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Reporting Hierarchy</h3>
                                 <div className="text-xs text-gray-500 mb-4">Trigger: 1, 2, 3</div>
-                                
+
                                 <div className="space-y-3">
                                     {[
                                         { icon: '📋', label: 'Manager', role: 'Manager', count: staffByRole?.Manager || 0 },
@@ -123,7 +123,7 @@ export default function Dashboard({ totalDepartments, totalStaff, totalSuperviso
                             {/* Staff by Position */}
                             <div className="bg-white rounded-lg shadow-md p-6">
                                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Staff by Position</h3>
-                                
+
                                 <div className="space-y-2">
                                     <div className="grid grid-cols-3 gap-4 pb-3 border-b border-gray-200">
                                         <p className="text-sm font-semibold text-gray-600">POSITION</p>

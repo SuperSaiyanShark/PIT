@@ -21,7 +21,7 @@ class Ward extends Model
         'telExtn'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function beds()
     {

@@ -2,6 +2,13 @@ import { router, Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Beds({ ward, beds }) {
+    // Sort beds numerically by bed number
+    const sortedBeds = [...beds].sort((a, b) => {
+        const numA = parseInt(a.bedNumber.replace('B-', ''));
+        const numB = parseInt(b.bedNumber.replace('B-', ''));
+        return numA - numB;
+    });
+
     const handleAssign = (bedNumber) => {
         router.get(route('my-wards.beds.assign.form', [ward.wardNumber, bedNumber]));
     };
@@ -41,14 +48,15 @@ export default function Beds({ ward, beds }) {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {beds.map((bed) => (
+                                {sortedBeds.map((bed) => (
                                     <tr key={bed.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">{bed.bedNumber}</td>
                                         <td className="px-6 py-4 text-sm">
-                                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${bed.status === 'Available' ? 'bg-green-100 text-green-800' :
-                                                    bed.status === 'Occupied' ? 'bg-red-100 text-red-800' :
-                                                        'bg-yellow-100 text-yellow-800'
-                                                }`}>
+                                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                                bed.status === 'Available' ? 'bg-green-100 text-green-800' :
+                                                bed.status === 'Occupied' ? 'bg-red-100 text-red-800' :
+                                                'bg-yellow-100 text-yellow-800'
+                                            }`}>
                                                 {bed.status}
                                             </span>
                                         </td>
