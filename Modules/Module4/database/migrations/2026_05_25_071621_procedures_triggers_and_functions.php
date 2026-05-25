@@ -10,7 +10,11 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
+    {   
+
+        DB::unprepared('DROP PROCEDURE IF EXISTS schedule_patient_appointment(bigint, date, time without time zone, varchar, varchar);');
+        DB::unprepared('DROP PROCEDURE IF EXISTS record_patient_treatment(bigint, bigint, varchar, text, date, time);');
+        DB::unprepared('DROP PROCEDURE IF EXISTS complete_patient_treatment(bigint, text);');   
         // ==========================================
         // 1. PROCEDURES (Actions / Mutations)
         // ==========================================
