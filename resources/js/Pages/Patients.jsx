@@ -21,14 +21,22 @@ export default function Patients({ patients = [], wards = [] }) {
         status: 'admitted',
     });
 
+    // Helper function to get full name from first_name and last_name
+    const getFullName = (patient) => {
+        const firstName = patient.first_name || '';
+        const lastName = patient.last_name || '';
+        return (firstName + ' ' + lastName).trim();
+    };
+
     // Client-side filtering logic
     const filteredPatients = useMemo(() => {
         return patients.filter(patient => {
             const wardName = patient.ward?.name || '';
             const searchLower = searchTerm.toLowerCase();
+            const fullName = getFullName(patient);
             
             const matchesSearch = 
-                patient.name.toLowerCase().includes(searchLower) ||
+                fullName.toLowerCase().includes(searchLower) ||
                 patient.allocation_id.toLowerCase().includes(searchLower) ||
                 wardName.toLowerCase().includes(searchLower);
             
@@ -63,8 +71,9 @@ export default function Patients({ patients = [], wards = [] }) {
     const handleEditPatient = (patient) => {
         setSelectedPatient(patient);
         form.clearErrors();
+        const fullName = getFullName(patient);
         form.setData({
-            name: patient.name || '',
+            name: fullName,
             allocation_id: patient.allocation_id || '',
             ward_id: patient.ward_id || '',
             date_admitted: patient.date_admitted || '',
@@ -170,7 +179,7 @@ export default function Patients({ patients = [], wards = [] }) {
                             <tbody className="divide-y divide-gray-200">
                                 {filteredPatients.map(patient => (
                                     <tr key={patient.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{patient.name}</td>
+                                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{getFullName(patient)}</td>
                                         <td className="px-6 py-4 text-sm text-gray-600 font-semibold">{patient.allocation_id}</td>
                                         <td className="px-6 py-4 text-sm text-gray-600">
                                             <span className="inline-block bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-xs font-semibold">

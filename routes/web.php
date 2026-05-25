@@ -24,40 +24,14 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $totalStaff = \App\Models\User::where('staff_type', '!=', null)->count();
     $totalDepartments = \App\Models\Department::count();
-    $totalSupervisors = \App\Models\User::where('staff_role_id', 2)->count(); // Assuming 2 is Supervisor role
-    
-    // Get staff by role
-    $staffByRole = \App\Models\User::with('staffRole')
-        ->whereNotNull('staff_role_id')
-        ->get()
-        ->groupBy('staffRole.name')
-        ->map(fn($users) => $users->count());
-    
-    // Get supervisors with their staff count
-    $supervisors = \App\Models\Ward::with('head')
-        ->whereNotNull('ward_head_id')
-        ->get()
-        ->groupBy('ward_head_id')
-        ->map(function($wards) {
-            $headId = $wards->first()->ward_head_id;
-            $head = \App\Models\User::find($headId);
-            $staffCount = \App\Models\User::where('ward_id', $wards->pluck('id')->toArray())->count();
-            
-            return [
-                'name' => $head?->name ?? 'Unknown',
-                'id' => $headId,
-                'staffCount' => $staffCount,
-            ];
-        })
-        ->values();
+    $totalPatients = \App\Models\Patient::count();
+    $totalWards = \App\Models\Ward::count();
     
     return Inertia::render('Dashboard', [
         'totalStaff' => $totalStaff,
         'totalDepartments' => $totalDepartments,
-        'totalSupervisors' => $totalSupervisors,
-        'compliance' => 100,
-        'staffByRole' => $staffByRole,
-        'supervisors' => $supervisors,
+        'totalPatients' => $totalPatients,
+        'totalWards' => $totalWards,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -92,13 +66,25 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     // Responsibility Management
     Route::resource('responsibilities', ResponsibilityController::class);
     
-    // Patient Management
-    Route::resource('patients', PatientController::class);
+    // Patient Management - Defined in Module1 routes, commenting out to avoid conflicts
+    // Route::resource('patients', PatientController::class);
     
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // =========================================================================
+    // MODULE 1 DASHBOARD - STAFF & PATIENT MANAGEMENT
+    // =========================================================================
+    Route::get('/module1-dashboard', function () {
+        return view('module1-dashboard', [
+            'totalStaff' => \App\Models\User::where('staff_type', '!=', null)->count(),
+            'totalPatients' => \App\Models\Patient::count() ?? 0,
+            'totalDepartments' => \App\Models\Department::count(),
+            'totalWards' => \App\Models\Ward::count(),
+        ]);
+    })->name('module1.dashboard');
 
     // =========================================================================
     // MODULE 4 WORKSPACE PASS-THROUGH ROUTE FOR ZIGGY

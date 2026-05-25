@@ -43,7 +43,6 @@ export default function AuthenticatedLayout({ header, children }) {
                     {/* Appointments */}
                     <Link
                         href={route('module4.dashboard')}
-                        target="_top"
                         className={`flex items-center ${sidebarOpen ? 'justify-start px-4' : 'justify-center'} py-3 rounded-lg transition-all duration-200 group ${
                             route().current('module4.dashboard') ? 'bg-cyan-500 text-white shadow-sm' : 'hover:bg-cyan-500/50 text-cyan-100 hover:text-white'
                         }`}
@@ -99,6 +98,29 @@ export default function AuthenticatedLayout({ header, children }) {
                         </svg>
                         {sidebarOpen && <span className="ml-3 text-sm font-medium transition-opacity duration-200">Responsibilities</span>}
                     </Link>
+
+                    {/* Module1 Section - Patient Management */}
+                    <div className="my-4 pt-4 border-t border-cyan-500/60 space-y-1">
+                        {sidebarOpen ? (
+                            <span className="text-cyan-200 text-[10px] font-bold px-4 py-1 block uppercase tracking-wider">Module1</span>
+                        ) : (
+                            <div className="border-b border-cyan-500/30 my-2 mx-4" />
+                        )}
+                        
+                        {/* Module1 Dashboard Link */}
+                        <Link
+                            href={route('module1.dashboard')}
+                            className={`flex items-center ${sidebarOpen ? 'justify-start px-4' : 'justify-center'} py-3 rounded-lg transition-all duration-200 group ${
+                                route().current('module1.dashboard') ? 'bg-cyan-500 text-white shadow-sm' : 'hover:bg-cyan-500/50 text-cyan-100 hover:text-white'
+                            }`}
+                            title={!sidebarOpen ? "Staff & Patients" : ""}
+                        >
+                            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {sidebarOpen && <span className="ml-3 text-sm font-medium transition-opacity duration-200">Staff & Patients</span>}
+                        </Link>
+                    </div>
 
                     {/* Module3 Section - Hospital Management */}
                     <div className="my-4 pt-4 border-t border-cyan-500/60 space-y-1">
@@ -166,7 +188,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </nav>
 
-                {/* Bottom Action Footer (Stays anchored elegantly) */}
+                {/* Bottom Action Footer */}
                 <div className="p-3 border-t border-cyan-500 bg-cyan-600/50 flex-shrink-0 space-y-1">
                     {/* Logout Link */}
                     <form method="POST" action={route('logout')}>

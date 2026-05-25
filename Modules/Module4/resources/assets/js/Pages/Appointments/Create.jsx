@@ -138,7 +138,7 @@ export default function AppointmentCreate() {
                                 >
                                     Schedule Appointment
                                 </button>
-                                <Link href={route('module4.appointments.choosePatientType')} className="px-6 py-3 bg-gray-100 text-gray-600 font-semibold rounded-xl hover:bg-gray-200 transition text-center">
+                                <Link href={route('module4.appointments.choose-patient-type')} className="px-6 py-3 bg-gray-100 text-gray-600 font-semibold rounded-xl hover:bg-gray-200 transition text-center">
                                     Back
                                 </Link>
                             </div>

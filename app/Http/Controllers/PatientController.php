@@ -41,6 +41,12 @@ class PatientController extends Controller
             'status' => 'nullable|in:admitted,discharged,transferred',
         ]);
 
+        // Split name into first_name and last_name
+        $nameParts = explode(' ', $validated['name'], 2);
+        $validated['first_name'] = $nameParts[0];
+        $validated['last_name'] = $nameParts[1] ?? '';
+        unset($validated['name']);
+
         Patient::create($validated);
 
         return back()->with('success', 'Patient added successfully.');
@@ -67,6 +73,12 @@ class PatientController extends Controller
             'date_expected_leave' => 'required|date',
             'status' => 'nullable|in:admitted,discharged,transferred',
         ]);
+
+        // Split name into first_name and last_name
+        $nameParts = explode(' ', $validated['name'], 2);
+        $validated['first_name'] = $nameParts[0];
+        $validated['last_name'] = $nameParts[1] ?? '';
+        unset($validated['name']);
 
         $patient->update($validated);
 

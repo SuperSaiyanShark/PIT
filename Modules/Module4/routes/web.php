@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 // Updated Route: Tells Inertia to find and compile the React asset nested in Module 4
 Route::get('/dashboard', function () {
-    return Inertia::render('Module4::Dashboard'); 
+    return Inertia::render('Module4::Dashboard');
 })->middleware(['auth', 'verified'])->name('module4.dashboard');
 
 Route::middleware('auth')->group(function () {

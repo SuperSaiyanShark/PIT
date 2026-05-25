@@ -1,0 +1,28 @@
+[33m5f6d5c4e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m fixed a bunch of stuff regarding module4 and module3
+[33mee79f7c7[m fixed module4 breaking for some reason
+[33mfb0cdde7[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m im gonna cry
+[33maadf8d13[m added procedures to appointment index and fixed module3 crashing the server
+[33mce40ddde[m added starting points for module 1 and module 3. also added module 2's migrations
+[33m68f48999[m fixed app.blade.php to include the proper dashboard layout
+[33mc08e645c[m holy shit
+[33m898935db[m fixing module4's appointments AGAIN
+[33m2ed0e4e0[m fixed incomplete index.blade.php
+[33mdc286495[m fixed incomplete index.blade.php
+[33mca9c8344[m testing
+[33m6665e84c[m made appointment views more uniform with module 4's dashboard
+[33md38bd00d[m improved uniformity and made module4's staff button redirect to root's
+[33m54e333ba[m separated css and react inertia
+[33m76b69382[m added ziggy.js and routes to help
+[33m6524a3dd[m cleaned up routes again
+[33m73379df1[m restored ziggy routes
+[33mc1382d5a[m fixed a problem with the layouts/app.blade.php
+[33ma644c6a7[m fixed proxies
+[33m9efa7a07[m fixed https problems
+[33mc66489b7[m more module4 integration
+[33mae75dc87[m Added modular support and added module4 to module2
+[33ma1847763[m Revert "reworked module1 for module2"
+[33m4630ad19[m reworked module1 for module2
+[33m20bfafe3[m 'Updated'
+[33me181c9e2[m Update project features
+[33m27b1dab9[m[33m ([m[1;31morigin/module2[m[33m)[m Add staff management features and migration
+[33mad014a84[m Initial commit
