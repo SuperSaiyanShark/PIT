@@ -14,7 +14,6 @@
     </head>
     <body class="font-sans antialiased bg-gradient-to-br from-cyan-50 to-cyan-100">
         <div class="min-h-screen">
-            @include('layouts.navigation')
 
             <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-8 px-6 shadow-lg">
                 <div class="flex flex-col sm:flex-row justify-between items-center max-w-7xl mx-auto gap-4">

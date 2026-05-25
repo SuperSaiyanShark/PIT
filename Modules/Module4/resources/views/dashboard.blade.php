@@ -85,8 +85,8 @@
                                     </svg>
                                 </div>
                             </div>
-                            <h2 class="text-2xl font-bold text-gray-800 text-center">Record Treatments</h2>
-                            <p class="text-gray-600 text-center mt-2 text-sm">Add new treatment</p>
+                            <h2 class="text-2xl font-bold text-gray-800 text-center">All Treatments</h2>
+                            <p class="text-gray-600 text-center mt-2 text-sm">View all treatments</p>
                         </div>
                     </a>
 

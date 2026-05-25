@@ -6,6 +6,7 @@ use Nwidart\Modules\Support\ModuleServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
 use Modules\Module4\app\Providers\EventServiceProvider;
 use Modules\Module4\app\Providers\RouteServiceProvider;
+use Modules\Module4\app\Providers\AuthServiceProvider;
 
 class Module4ServiceProvider extends ModuleServiceProvider
 {
@@ -34,6 +35,7 @@ class Module4ServiceProvider extends ModuleServiceProvider
     protected array $providers = [
         EventServiceProvider::class,
         RouteServiceProvider::class,
+        AuthServiceProvider::class,
     ];
 
     /**
