@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Module1\app\Providers;
+namespace Modules\Module1\App\Providers;
 
 use Nwidart\Modules\Support\ModuleServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
@@ -44,3 +44,4 @@ class Module1ServiceProvider extends ModuleServiceProvider
     //     $schedule->command('inspire')->hourly();
     // }
 }
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Module1\app\Providers;
+namespace Modules\Module1\App\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -25,3 +25,4 @@ class EventServiceProvider extends ServiceProvider
      */
     protected function configureEmailVerification(): void {}
 }
+
