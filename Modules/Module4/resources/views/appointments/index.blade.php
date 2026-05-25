@@ -1,20 +1,26 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white p-6 sm:p-8 rounded-2xl shadow-lg flex flex-col md:flex-row justify-between items-center gap-6 border-none">
-            <div>
-                <h2 class="text-2xl sm:text-3xl font-bold leading-tight">{{ __('My Appointments') }}</h2>
-                <p class="text-cyan-100 mt-1 text-xs sm:text-sm">Manage and track your upcoming scheduled clinical visits</p>
-            </div>
-            <div class="flex flex-wrap gap-3 w-full md:w-auto justify-end">
-                <a href="{{ route('module4.appointments.choose-patient-type') }}" class="bg-white text-cyan-600 px-5 py-2.5 rounded-xl font-bold hover:bg-cyan-50 transition shadow-md text-sm text-center flex-1 md:flex-none">
-                    Schedule New Appointment
-                </a>
-                <a href="{{ route('module4.dashboard') }}" class="bg-cyan-700 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-cyan-800 transition shadow-md text-sm text-center flex-1 md:flex-none">
-                    Module 4 Dashboard
-                </a>
-                <a href="{{ route('dashboard') }}" class="bg-cyan-800 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-cyan-900 transition shadow-md text-sm text-center flex-1 md:flex-none">
-                    Main Dashboard
-                </a>
+        <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white -mx-4 sm:-mx-6 lg:-mx-8 -mt-6 sm:-mt-8 shadow-lg border-none">
+            <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <h1 class="text-3xl sm:text-4xl font-bold tracking-wide">WELLMEADOWS HOSPITAL</h1>
+                    <div class="flex items-center gap-2 mt-2 text-cyan-100 text-sm sm:text-base font-semibold uppercase tracking-wider">
+                        <span>{{ __('My Appointments') }}</span>
+                        <span class="text-cyan-300/60">•</span>
+                        <span class="text-xs sm:text-sm font-medium lowercase normal-case tracking-normal text-cyan-200">Manage and track upcoming scheduled clinical visits</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-3 w-full md:w-auto justify-end">
+                    <a href="{{ route('module4.appointments.choose-patient-type') }}" class="bg-white text-cyan-600 px-5 py-2.5 rounded-lg font-bold hover:bg-cyan-50 transition shadow-md text-sm text-center flex-1 md:flex-none">
+                        Schedule New Appointment
+                    </a>
+                    <a href="{{ route('module4.dashboard') }}" class="bg-cyan-700/50 text-white border border-cyan-400/30 px-5 py-2.5 rounded-lg font-semibold hover:bg-cyan-700 transition shadow-md text-sm text-center flex-1 md:flex-none">
+                        Module 4 Dashboard
+                    </a>
+                    <a href="{{ route('dashboard') }}" class="bg-cyan-800 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-cyan-900 transition shadow-md text-sm text-center flex-1 md:flex-none">
+                        Main Dashboard
+                    </a>
+                </div>
             </div>
         </div>
     </x-slot>
