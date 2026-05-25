@@ -1,56 +1,47 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Schedule Appointment') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-semibold mb-6">Select Patient Type</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Inpatient Option -->
-                        <a href="{{ route('module4.appointments.create', ['type' => 'inpatient']) }}" 
-                           class="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900 transition cursor-pointer">
-                            <div class="flex flex-col items-center text-center">
-                                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4 0h1m-1-4h1"></path>
-                                    </svg>
-                                </div>
-                                <h4 class="text-lg font-semibold mb-2">Inpatient</h4>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    For patients admitted to the hospital
-                                </p>
+    <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 min-h-screen py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white p-8 rounded-2xl shadow-lg mb-8 text-center">
+                <h2 class="text-3xl font-bold">{{ __('Schedule Appointment') }}</h2>
+                <p class="text-cyan-100 mt-2">Select the type of patient registration to continue</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <a href="{{ route('module4.appointments.create', ['type' => 'inpatient']) }}" 
+                   class="transform hover:scale-105 transition duration-300 group">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition h-full border-b-4 border-blue-500 group-hover:border-blue-600">
+                        <div class="flex justify-center mb-6">
+                            <div class="bg-blue-50 rounded-full p-6 group-hover:bg-blue-100 transition">
+                                <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
                             </div>
-                        </a>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 text-center">Inpatient</h3>
+                        <p class="text-gray-600 text-center mt-2 text-sm">For individuals admitted to the hospital requiring overnight or extended stays.</p>
+                    </div>
+                </a>
 
-                        <!-- Outpatient Option -->
-                        <a href="{{ route('module4.appointments.create', ['type' => 'outpatient']) }}" 
-                           class="p-6 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-900 transition cursor-pointer">
-                            <div class="flex flex-col items-center text-center">
-                                <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                                    </svg>
-                                </div>
-                                <h4 class="text-lg font-semibold mb-2">Outpatient</h4>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    For clinic or emergency visits
-                                </p>
+                <a href="{{ route('module4.appointments.create', ['type' => 'outpatient']) }}" 
+                   class="transform hover:scale-105 transition duration-300 group">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition h-full border-b-4 border-teal-500 group-hover:border-teal-600">
+                        <div class="flex justify-center mb-6">
+                            <div class="bg-teal-50 rounded-full p-6 group-hover:bg-teal-100 transition">
+                                <svg class="w-12 h-12 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                                </svg>
                             </div>
-                        </a>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 text-center">Outpatient</h3>
+                        <p class="text-gray-600 text-center mt-2 text-sm">For routine clinical follow-ups, consultations, or emergency medical examinations.</p>
                     </div>
+                </a>
+            </div>
 
-                    <div class="mt-8 text-center">
-                        <a href="{{ route('dashboard') }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200">
-                            Back to Dashboard
-                        </a>
-                    </div>
-                </div>
+            <div class="mt-8 text-center">
+                <a href="{{ route('module4.appointments.index') }}" class="bg-white text-gray-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-50 transition shadow-md inline-block">
+                    Back to Appointments
+                </a>
             </div>
         </div>
     </div>
