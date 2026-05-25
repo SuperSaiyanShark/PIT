@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {   
 
-        DB::unprepared('DROP PROCEDURE IF EXISTS schedule_patient_appointment(bigint, date, time without time zone, varchar, varchar);');
-        DB::unprepared('DROP PROCEDURE IF EXISTS record_patient_treatment(bigint, bigint, varchar, text, date, time);');
-        DB::unprepared('DROP PROCEDURE IF EXISTS complete_patient_treatment(bigint, text);');   
+        DB::unprepared('DROP PROCEDURE IF EXISTS schedule_patient_appointment CASCADE;');
+        DB::unprepared('DROP PROCEDURE IF EXISTS record_patient_treatment CASCADE;');
+        DB::unprepared('DROP PROCEDURE IF EXISTS complete_patient_treatment CASCADE;');
         // ==========================================
         // 1. PROCEDURES (Actions / Mutations)
         // ==========================================
