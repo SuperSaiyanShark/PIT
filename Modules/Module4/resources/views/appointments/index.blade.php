@@ -1,20 +1,21 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white -mx-4 sm:-mx-6 lg:-mx-8 -mt-6 sm:-mt-8 shadow-lg border-none">
-            <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+    <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 min-h-screen">
+        
+        <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white py-8 px-6 shadow-lg">
+            <div class="flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto gap-6">
                 <div>
-                    <h1 class="text-3xl sm:text-4xl font-bold tracking-wide">WELLMEADOWS HOSPITAL</h1>
-                    <div class="flex items-center gap-2 mt-2 text-cyan-100 text-sm sm:text-base font-semibold uppercase tracking-wider">
+                    <h1 class="text-4xl font-bold tracking-wide">WELLMEADOWS HOSPITAL</h1>
+                    <p class="text-cyan-100 mt-2 text-lg uppercase tracking-wider font-medium flex items-center gap-2">
                         <span>{{ __('My Appointments') }}</span>
-                        <span class="text-cyan-300/60">•</span>
-                        <span class="text-xs sm:text-sm font-medium lowercase normal-case tracking-normal text-cyan-200">Manage and track upcoming scheduled clinical visits</span>
-                    </div>
+                        <span class="text-cyan-300/50">•</span>
+                        <span class="text-sm normal-case tracking-normal text-cyan-200/90">Manage and track your upcoming scheduled clinical visits</span>
+                    </p>
                 </div>
                 <div class="flex flex-wrap gap-3 w-full md:w-auto justify-end">
                     <a href="{{ route('module4.appointments.choose-patient-type') }}" class="bg-white text-cyan-600 px-5 py-2.5 rounded-lg font-bold hover:bg-cyan-50 transition shadow-md text-sm text-center flex-1 md:flex-none">
                         Schedule New Appointment
                     </a>
-                    <a href="{{ route('module4.dashboard') }}" class="bg-cyan-700/50 text-white border border-cyan-400/30 px-5 py-2.5 rounded-lg font-semibold hover:bg-cyan-700 transition shadow-md text-sm text-center flex-1 md:flex-none">
+                    <a href="{{ route('module4.dashboard') }}" class="bg-cyan-700 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-cyan-800 transition shadow-md text-sm text-center flex-1 md:flex-none">
                         Module 4 Dashboard
                     </a>
                     <a href="{{ route('dashboard') }}" class="bg-cyan-800 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-cyan-900 transition shadow-md text-sm text-center flex-1 md:flex-none">
@@ -23,67 +24,67 @@
                 </div>
             </div>
         </div>
-    </x-slot>
 
-    <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 min-h-screen py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            @if ($appointments->count())
-                <div class="grid grid-cols-1 gap-6">
-                    @foreach ($appointments as $appointment)
-                        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 border-l-4 border-cyan-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                            <div class="flex-1">
-                                <div class="flex flex-wrap items-center gap-3">
-                                    <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full 
-                                        @if($appointment->patient_type === 'inpatient') bg-blue-100 text-blue-800 @else bg-teal-100 text-teal-800 @endif">
-                                        {{ $appointment->patient_type }}
-                                    </span>
-                                    <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full
-                                        @if($appointment->status === 'completed') bg-green-100 text-green-800
-                                        @elif($appointment->status === 'pending') bg-yellow-100 text-yellow-800
-                                        @else bg-red-100 text-red-800 @endif">
-                                        {{ $appointment->status }}
-                                    </span>
+        <div class="py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                @if ($appointments->count())
+                    <div class="grid grid-cols-1 gap-6">
+                        @foreach ($appointments as $appointment)
+                            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 border-l-4 border-cyan-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                                <div class="flex-1">
+                                    <div class="flex flex-wrap items-center gap-3">
+                                        <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full 
+                                            @if($appointment->patient_type === 'inpatient') bg-blue-100 text-blue-800 @else bg-teal-100 text-teal-800 @endif">
+                                            {{ $appointment->patient_type }}
+                                        </span>
+                                        <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full
+                                            @if($appointment->status === 'completed') bg-green-100 text-green-800
+                                            @elif($appointment->status === 'pending') bg-yellow-100 text-yellow-800
+                                            @else bg-red-100 text-red-800 @endif">
+                                            {{ $appointment->status }}
+                                        </span>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-800 mt-3">{{ $appointment->reason_for_visit }}</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 mt-2 text-sm text-gray-600">
+                                        <p><strong class="text-gray-700">Date:</strong> {{ $appointment->appointment_date->format('M d, Y') }} at {{ $appointment->appointment_time->format('g:i A') }}</p>
+                                        <p><strong class="text-gray-700">Doctor Reference ID:</strong> #{{ $appointment->doctor_id }}</p>
+                                        <p><strong class="text-gray-700">Patient Reference ID:</strong> #{{ $appointment->patient_id }}</p>
+                                    </div>
                                 </div>
-                                <h3 class="text-xl font-bold text-gray-800 mt-3">{{ $appointment->reason_for_visit }}</h3>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 mt-2 text-sm text-gray-600">
-                                    <p><strong class="text-gray-700">Date:</strong> {{ $appointment->appointment_date->format('M d, Y') }} at {{ $appointment->appointment_time->format('g:i A') }}</p>
-                                    <p><strong class="text-gray-700">Doctor Reference ID:</strong> #{{ $appointment->doctor_id }}</p>
-                                    <p><strong class="text-gray-700">Patient Reference ID:</strong> #{{ $appointment->patient_id }}</p>
+                                
+                                <div class="flex items-center gap-3 w-full md:w-auto justify-end border-t border-gray-100 md:border-t-0 pt-4 md:pt-0">
+                                    <a href="{{ route('module4.appointments.show', $appointment) }}" class="px-4 py-2 bg-cyan-50 text-cyan-600 font-semibold rounded-xl hover:bg-cyan-100 transition text-sm text-center flex-1 md:flex-none">
+                                        View Details
+                                    </a>
+                                    <a href="{{ route('module4.appointments.edit', $appointment) }}" class="px-4 py-2 bg-cyan-600 text-white font-semibold rounded-xl hover:bg-cyan-700 transition text-sm text-center flex-1 md:flex-none">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('module4.appointments.destroy', $appointment) }}" method="POST" class="inline flex-1 md:flex-none">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="w-full px-4 py-2 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 transition text-sm text-center" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                            Cancel
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-                            
-                            <div class="flex items-center gap-3 w-full md:w-auto justify-end border-t border-gray-100 md:border-t-0 pt-4 md:pt-0">
-                                <a href="{{ route('module4.appointments.show', $appointment) }}" class="px-4 py-2 bg-cyan-50 text-cyan-600 font-semibold rounded-xl hover:bg-cyan-100 transition text-sm text-center flex-1 md:flex-none">
-                                    View Details
-                                </a>
-                                <a href="{{ route('module4.appointments.edit', $appointment) }}" class="px-4 py-2 bg-cyan-600 text-white font-semibold rounded-xl hover:bg-cyan-700 transition text-sm text-center flex-1 md:flex-none">
-                                    Edit
-                                </a>
-                                <form action="{{ route('module4.appointments.destroy', $appointment) }}" method="POST" class="inline flex-1 md:flex-none">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="w-full px-4 py-2 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 transition text-sm text-center" onclick="return confirm('Are you sure you want to cancel this appointment?')">
-                                        Cancel
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @else
-                <div class="bg-white rounded-2xl shadow-lg p-12 text-center border-b-4 border-cyan-500 max-w-2xl mx-auto">
-                    <div class="bg-cyan-100 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-                        <svg class="w-10 h-10 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
+                        @endforeach
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-800">No Scheduled Appointments</h3>
-                    <p class="text-gray-500 mt-2 max-w-sm mx-auto mb-6">There are currently no active appointment instances registered under your file profiles.</p>
-                    <a href="{{ route('module4.appointments.choose-patient-type') }}" class="inline-block px-6 py-3 bg-cyan-600 text-white font-semibold rounded-xl hover:bg-cyan-700 transition shadow-md">
-                        Schedule Your First Appointment
-                    </a>
-                </div>
-            @endif
+                @else
+                    <div class="bg-white rounded-2xl shadow-lg p-12 text-center border-b-4 border-cyan-500 max-w-2xl mx-auto mt-6">
+                        <div class="bg-cyan-100 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                            <svg class="w-10 h-10 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">No Scheduled Appointments</h3>
+                        <p class="text-gray-500 mt-2 max-w-sm mx-auto mb-6">There are currently no active appointment instances registered under your file profiles.</p>
+                        <a href="{{ route('module4.appointments.choose-patient-type') }}" class="inline-block px-6 py-3 bg-cyan-600 text-white font-semibold rounded-xl hover:bg-cyan-700 transition shadow-md">
+                            Schedule Your First Appointment
+                        </a>
+                    </div>
+                @endif
+            </div>
         </div>
     </div>
 </x-app-layout>
