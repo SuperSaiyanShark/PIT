@@ -25,9 +25,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 <nav className="flex-1 p-4 space-y-2">
                     <Link
                         href={route('dashboard')}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('dashboard') ? 'bg-cyan-500' : 'hover:bg-cyan-500'
-                        }`}
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${route().current('dashboard') ? 'bg-cyan-500' : 'hover:bg-cyan-500'}`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4z"></path>
@@ -38,9 +36,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
                     <Link
                         href={route('staff.index')}
-                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('staff.index') ? 'bg-cyan-500' : 'hover:bg-cyan-500'
-                        }`}
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${route().current('staff.index') ? 'bg-cyan-500' : 'hover:bg-cyan-500'}`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM9 6a3 3 0 11-6 0 3 3 0 016 0zm0 0h6m-6 0h6m-6 0a3 3 0 11-6 0 3 3 0 016 0zm9-6h6a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -65,17 +61,17 @@ export default function AuthenticatedLayout({ header, children }) {
                     </Link>
 
                     <Link
-                        href={route('wards.index')}
+                        href={route('admissions.index')}
                         className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('wards.index') || route().current('wards.create') || route().current('wards.edit')
+                            route().current('admissions.index') || route().current('admissions.create') || route().current('admissions.edit')
                                 ? 'bg-cyan-500'
                                 : 'hover:bg-cyan-500'
                         }`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd"></path>
+                            <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v6a1 1 0 102 0V8z" clipRule="evenodd"></path>
                         </svg>
-                        {sidebarOpen && <span>Wards</span>}
+                        {sidebarOpen && <span>Admissions</span>}
                     </Link>
                 </nav>
 

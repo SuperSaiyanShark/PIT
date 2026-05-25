@@ -7,6 +7,7 @@ use App\Http\Controllers\WardController;
 use App\Http\Controllers\StaffRoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ResponsibilityController;
+use App\Http\Controllers\AdmissionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,8 +44,9 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     // Department Management
     Route::resource('departments', DepartmentController::class);
     
-    // Ward Management
-    Route::resource('wards', WardController::class);
+    // Admissions Management
+    Route::resource('admissions', AdmissionController::class);
+    Route::patch('/admissions/{admission}/discharge', [AdmissionController::class, 'discharge'])->name('admissions.discharge');
     
     // Staff Role Management
     Route::resource('staff-roles', StaffRoleController::class);
