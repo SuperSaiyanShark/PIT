@@ -7,8 +7,7 @@ import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
     return (
@@ -27,9 +26,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <Link
                         href={route('dashboard')}
                         className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('dashboard')
-                                ? 'bg-cyan-500'
-                                : 'hover:bg-cyan-500'
+                            route().current('dashboard') ? 'bg-cyan-500' : 'hover:bg-cyan-500'
                         }`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -42,9 +39,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <Link
                         href={route('staff.index')}
                         className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
-                            route().current('staff.index')
-                                ? 'bg-cyan-500'
-                                : 'hover:bg-cyan-500'
+                            route().current('staff.index') ? 'bg-cyan-500' : 'hover:bg-cyan-500'
                         }`}
                     >
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -67,6 +62,20 @@ export default function AuthenticatedLayout({ header, children }) {
                             <path fillRule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000-2H2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V5a1 1 0 100 2 1 1 0 011 1v1a1 1 0 100 2V6a3 3 0 00-3-3H4zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                         </svg>
                         {sidebarOpen && <span>Responsibilities</span>}
+                    </Link>
+
+                    <Link
+                        href={route('wards.index')}
+                        className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition ${
+                            route().current('wards.index') || route().current('wards.create') || route().current('wards.edit')
+                                ? 'bg-cyan-500'
+                                : 'hover:bg-cyan-500'
+                        }`}
+                    >
+                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clipRule="evenodd"></path>
+                        </svg>
+                        {sidebarOpen && <span>Wards</span>}
                     </Link>
                 </nav>
 

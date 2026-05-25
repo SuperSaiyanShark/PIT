@@ -9,14 +9,15 @@ export default function StaffForm({ staff, departments, wards, staffRoles, onSub
         name: staff?.name || '',
         email: staff?.email || '',
         role: staff?.role || '',
-        staff_type: staff?.staff_type || 'nurse', // doctor, nurse, admin
+        staff_type: staff?.staff_type || 'nurse',
         department_id: staff?.department_id || '',
         ward_id: staff?.ward_id || '',
         staff_role_id: staff?.staff_role_id || '',
         phone: staff?.phone || '',
         building: staff?.building || '',
-        employment_type: staff?.employment_type || 'full-time', // full-time, part-time
+        employment_type: staff?.employment_type || 'full-time',
         hire_date: staff?.hire_date || '',
+        current_salary: staff?.current_salary || '',
     });
 
     const [errors, setErrors] = useState({});
@@ -24,7 +25,6 @@ export default function StaffForm({ staff, departments, wards, staffRoles, onSub
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        // Clear error for this field when user starts typing
         if (errors[name]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
@@ -217,6 +217,23 @@ export default function StaffForm({ staff, departments, wards, staffRoles, onSub
                         onChange={handleChange}
                     />
                 </div>
+
+                {/* Current Salary */}
+                <div>
+                    <InputLabel htmlFor="current_salary" value="Current Salary (₱)" />
+                    <TextInput
+                        id="current_salary"
+                        name="current_salary"
+                        type="number"
+                        className="mt-1 block w-full"
+                        value={formData.current_salary}
+                        onChange={handleChange}
+                        placeholder="e.g., 25000.00"
+                        min="0"
+                        step="0.01"
+                    />
+                    {errors.current_salary && <InputError message={errors.current_salary} />}
+                </div>
             </div>
 
             <div className="flex gap-4">
@@ -227,4 +244,3 @@ export default function StaffForm({ staff, departments, wards, staffRoles, onSub
         </form>
     );
 }
-/* Hire Date */
