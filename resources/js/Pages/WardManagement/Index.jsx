@@ -18,24 +18,24 @@ export default function WardIndex({ wards }) {
     };
 
     const getOccupancyPercentage = (ward) => {
-        const occupied = ward.beds_count || 0;
+        const occupied = ward.occupied_beds_count || 0;
         const capacity = ward.capacity || 1;
         return Math.round((occupied / capacity) * 100);
     };
 
     return (
         <AuthenticatedLayout>
-            {/* Main content - using same background as Patient Tracking */}
+            {/* Main container with cyan gradient background */}
             <div className="min-h-screen bg-gradient-to-br from-cyan-100 to-cyan-50 p-8">
                 <div className="max-w-7xl mx-auto">
 
-                    {/* Header Section */}
+                    {/* Header */}
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-cyan-700">WARD & BED MANAGEMENT</h1>
                         <p className="text-sm text-cyan-600 mt-1">"Manage hospital wards and bed allocations"</p>
                     </div>
 
-                    {/* Search and Filter Section */}
+                    {/* Search Section */}
                     <div className="bg-white rounded-lg shadow-md p-6 mb-8">
                         <div className="flex flex-col md:flex-row gap-4 items-end">
                             <div className="flex-1 min-w-0">
@@ -45,11 +45,11 @@ export default function WardIndex({ wards }) {
                                     placeholder="Search by ward name, ward number, or location..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                                 />
                             </div>
                             <Link href={route('my-wards.create')}>
-                                <button className="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-lg font-semibold transition">
+                                <button className="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-lg font-semibold">
                                     + Add New Ward
                                 </button>
                             </Link>
@@ -69,7 +69,9 @@ export default function WardIndex({ wards }) {
                                         <th className="px-4 py-3 text-left text-sm font-semibold">Ward Number</th>
                                         <th className="px-4 py-3 text-left text-sm font-semibold">Location</th>
                                         <th className="px-4 py-3 text-left text-sm font-semibold">Beds / Capacity</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold">Occupancy</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold">Occupied</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold">Available</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold">Occupancy %</th>
                                         <th className="px-4 py-3 text-left text-sm font-semibold">Actions</th>
                                     </tr>
                                 </thead>
@@ -84,9 +86,15 @@ export default function WardIndex({ wards }) {
                                                 <span className="text-gray-400"> / </span>
                                                 <span>{ward.capacity}</span>
                                             </td>
+                                            <td className="px-4 py-3 text-sm text-red-600 font-semibold">
+                                                {ward.occupied_beds_count || 0}
+                                            </td>
+                                            <td className="px-4 py-3 text-sm text-green-600 font-semibold">
+                                                {(ward.beds_count || 0) - (ward.occupied_beds_count || 0)}
+                                            </td>
                                             <td className="px-4 py-3 text-sm">
                                                 <div className="flex items-center gap-2">
-                                                    <div className="w-20 bg-gray-200 rounded-full h-2">
+                                                    <div className="w-16 bg-gray-200 rounded-full h-2">
                                                         <div
                                                             className="bg-cyan-600 rounded-full h-2 transition-all"
                                                             style={{ width: `${getOccupancyPercentage(ward)}%` }}

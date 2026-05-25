@@ -11,7 +11,14 @@ class WardController extends Controller
 {
     public function index()
     {
-        $wards = Ward::withCount('beds')->get();
+        $wards = Ward::withCount('beds')
+            ->withCount([
+                'beds as occupied_beds_count' => function ($query) {
+                    $query->where('status', 'Occupied');
+                }
+            ])
+            ->get();
+
         return Inertia::render('WardManagement/Index', [
             'wards' => $wards
         ]);
