@@ -55,4 +55,28 @@
                                 <form action="{{ route('module4.appointments.destroy', $appointment) }}" method="POST" class="inline flex-1 md:flex-none">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="w-full px-4 py-2 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 transition text-sm text-center" onclick="return confirm('Are you sure you want to cancel this appointment
+                                    <button type="submit" class="w-full px-4 py-2 bg-red-50 text-red-600 font-semibold rounded-xl hover:bg-red-100 transition text-sm text-center" onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                                        Cancel
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="bg-white rounded-2xl shadow-lg p-12 text-center border-b-4 border-cyan-500 max-w-2xl mx-auto">
+                    <div class="bg-cyan-100 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">No Scheduled Appointments</h3>
+                    <p class="text-gray-500 mt-2 max-w-sm mx-auto mb-6">There are currently no active appointment instances registered under your file profiles.</p>
+                    <a href="{{ route('module4.appointments.choose-patient-type') }}" class="inline-block px-6 py-3 bg-cyan-600 text-white font-semibold rounded-xl hover:bg-cyan-700 transition shadow-md">
+                        Schedule Your First Appointment
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
+</x-app-layout>
