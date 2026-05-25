@@ -10,7 +10,27 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => {
-        // 1. Gather all available .jsx pages across your entire directory structure
+        // =========================================================================
+        // MODULE INTERCEPTOR: Handle explicit Module name-spacing (e.g. "Module4::Dashboard")
+        // =========================================================================
+        if (name.includes('::')) {
+            const [module, page] = name.split('::');
+            
+            // Map the lookup directly into the isolated subfolder system inside your plugin
+            const modulePages = import.meta.glob('../../Modules/*/resources/assets/js/Pages/**/*.jsx');
+            const targetModulePath = `../../Modules/${module}/resources/assets/js/Pages/${page}.jsx`;
+            
+            if (!modulePages[targetModulePath]) {
+                throw new Error(`Inertia Page component not found inside ${module}: ${page}.jsx at target path: ${targetModulePath}`);
+            }
+            
+            return resolvePageComponent(targetModulePath, modulePages);
+        }
+
+        // =========================================================================
+        // STANDARD ROOT APP LOOKUP: Preserves all your original normalization rules
+        // =========================================================================
+        // 1. Gather all available .jsx pages across your entire root directory structure
         const pages = import.meta.glob('./Pages/**/*.jsx');
 
         // 2. Normalize common folder names and case variations up-front

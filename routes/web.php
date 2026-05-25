@@ -99,6 +99,14 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // =========================================================================
+    // MODULE 4 WORKSPACE PASS-THROUGH ROUTE FOR ZIGGY
+    // =========================================================================
+    Route::get('/appointments-dashboard', function () {
+        return Inertia::render('Module4::Dashboard');
+    })->name('module4.dashboard');
+
 });
 
 require __DIR__.'/auth.php';

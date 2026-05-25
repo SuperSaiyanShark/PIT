@@ -43,6 +43,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     {/* Appointments */}
                     <Link
                         href={route('module4.dashboard')}
+                        target="_top"
                         className={`flex items-center ${sidebarOpen ? 'justify-start px-4' : 'justify-center'} py-3 rounded-lg transition-all duration-200 group ${
                             route().current('module4.dashboard') ? 'bg-cyan-500 text-white shadow-sm' : 'hover:bg-cyan-500/50 text-cyan-100 hover:text-white'
                         }`}
