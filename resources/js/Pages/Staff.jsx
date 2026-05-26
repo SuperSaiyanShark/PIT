@@ -126,7 +126,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
         <AuthenticatedLayout>
             <Head title="Medical Staff Management" />
 
-            <div className="min-h-screen bg-gradient-to-br from-cyan-100 to-cyan-50 p-8">
+            <div className="min-h-screen bg-gray-50 p-8">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex justify-between items-start">
@@ -142,7 +142,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                 </div>
 
                 {/* Search and Filter Section */}
-                <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div className="bg-white p-6 mb-8">
                     <div className="flex flex-col md:flex-row gap-4 items-end mb-6">
                         {/* Search Input */}
                         <div className="flex-1 min-w-0">
@@ -206,7 +206,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                 {/* Staff Display */}
                 {filteredStaff.length > 0 ? (
                     view === 'grid' ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                             {filteredStaff.map(member => (
                                 <div key={member.id} className="relative">
                                     <StaffCard staff={member} />
@@ -230,7 +230,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                             ))}
                         </div>
                     ) : (
-                        <div className="bg-white rounded-lg shadow-md overflow-x-auto">
+                        <div className="bg-white overflow-x-auto">
                             <table className="w-full">
                                 <thead className="bg-cyan-600 text-white">
                                     <tr>
@@ -292,7 +292,7 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
                         </div>
                     )
                 ) : (
-                    <div className="text-center py-12 bg-white rounded-lg shadow-md">
+                    <div className="text-center py-12 bg-white">
                         <p className="text-gray-600 text-lg">No staff members found matching your search.</p>
                     </div>
                 )}

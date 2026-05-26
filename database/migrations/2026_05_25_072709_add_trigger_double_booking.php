@@ -17,12 +17,12 @@ return new class extends Migration
                 v_staff_name    TEXT;
             BEGIN
                 SELECT CONCAT(name) INTO v_staff_name
-                FROM users WHERE id = NEW.user_id;
+                FROM users WHERE id = NEW.staff_id;
 
                 SELECT w.name INTO v_existing_ward
                 FROM schedules sa
                 JOIN wards w ON sa.ward_id = w.id
-                WHERE sa.user_id = NEW.user_id
+                WHERE sa.staff_id = NEW.staff_id
                   AND sa.shift_date = NEW.shift_date
                 LIMIT 1;
 

@@ -18,6 +18,11 @@ return new class extends Migration
                 v_max_staff     INT;
                 v_ward_name     VARCHAR(50);
             BEGIN
+                -- Skip validation if ward_id is NULL
+                IF NEW.ward_id IS NULL THEN
+                    RETURN NEW;
+                END IF;
+
                 SELECT name, total_beds
                 INTO v_ward_name, v_total_beds
                 FROM wards WHERE id = NEW.ward_id;

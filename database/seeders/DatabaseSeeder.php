@@ -21,6 +21,12 @@ class DatabaseSeeder extends Seeder
         // Create wards
         $this->call(WardSeeder::class);
         
+        // Create beds for wards
+        $this->call(BedSeeder::class);
+        
+        // Create patients
+        $this->call(PatientSeeder::class);
+        
         // Create staff roles
         $this->call(StaffRoleSeeder::class);
         
