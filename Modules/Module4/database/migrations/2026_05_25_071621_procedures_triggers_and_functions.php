@@ -15,6 +15,9 @@ return new class extends Migration
         DB::unprepared('DROP PROCEDURE IF EXISTS schedule_patient_appointment CASCADE;');
         DB::unprepared('DROP PROCEDURE IF EXISTS record_patient_treatment CASCADE;');
         DB::unprepared('DROP PROCEDURE IF EXISTS complete_patient_treatment CASCADE;');
+        DB::unprepared('DROP FUNCTION IF EXISTS get_patient_treatment_count(bigint) CASCADE;');
+        DB::unprepared('DROP FUNCTION IF EXISTS get_patient_daily_appointment_count(bigint,date) CASCADE;');
+        DB::unprepared('DROP FUNCTION IF EXISTS has_treatment_time_conflict(bigint,date,time) CASCADE;');
         // ==========================================
         // 1. PROCEDURES (Actions / Mutations)
         // ==========================================
@@ -116,6 +119,7 @@ return new class extends Migration
         ");
 
         // Function 2: Get total scheduled appointments for a patient on a specific day
+        DB::statement('DROP FUNCTION IF EXISTS get_patient_daily_appointment_count(bigint,date) CASCADE;');
         DB::unprepared("
             CREATE OR REPLACE FUNCTION get_patient_daily_appointment_count(p_patient_id BIGINT, p_date DATE)
             RETURNS INTEGER
@@ -136,6 +140,7 @@ return new class extends Migration
         ");
 
         // Function 3: Check if a patient already has a scheduled treatment at a specific date/time slot
+        DB::statement('DROP FUNCTION IF EXISTS has_treatment_time_conflict(bigint,date,time) CASCADE;');
         DB::unprepared("
             CREATE OR REPLACE FUNCTION has_treatment_time_conflict(p_patient_id BIGINT, p_date DATE, p_time TIME)
             RETURNS BOOLEAN
