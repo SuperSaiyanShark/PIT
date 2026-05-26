@@ -59,8 +59,10 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
 
     // ── Patient Management (Module 1) ─────────────────────────────
     Route::get('/patients',                    [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/patients/create',             [PatientController::class, 'create'])->name('patients.create');
     Route::post('/patients',                   [PatientController::class, 'store'])->name('patients.store');
     Route::get('/patients/{patient}',          [PatientController::class, 'show'])->name('patients.show');
+    Route::get('/patients/{patient}/edit',     [PatientController::class, 'edit'])->name('patients.edit');
     Route::patch('/patients/{patient}',        [PatientController::class, 'update'])->name('patients.update');
     Route::post('/patients/{patient}/medical-records', [PatientController::class, 'storeMedicalRecord'])->name('patients.medical-records.store');
     Route::post('/patients/{patient}/admit',   [PatientController::class, 'admit'])->name('patients.admit');

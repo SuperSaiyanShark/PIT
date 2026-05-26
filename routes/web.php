@@ -66,8 +66,8 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     // Responsibility Management
     Route::resource('responsibilities', ResponsibilityController::class);
     
-    // Patient Management - Defined in Module1 routes, commenting out to avoid conflicts
-    // Route::resource('patients', PatientController::class);
+    // Patient Management
+    Route::resource('patients', PatientController::class);
     
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
