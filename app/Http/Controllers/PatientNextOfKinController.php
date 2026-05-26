@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PatientNextOfKin;
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PatientNextOfKinController extends Controller
 {
@@ -14,7 +15,7 @@ class PatientNextOfKinController extends Controller
     public function index()
     {
         $nextOfKins = PatientNextOfKin::with('patient')->paginate(15);
-        return view('patient-next-of-kin.index', compact('nextOfKins'));
+        return Inertia::render('Module1/PatientNextOfKin/Index', compact('nextOfKins'));
     }
 
     /**
@@ -23,7 +24,7 @@ class PatientNextOfKinController extends Controller
     public function create()
     {
         $patients = Patient::all();
-        return view('patient-next-of-kin.create', compact('patients'));
+        return Inertia::render('Module1/PatientNextOfKin/Create', compact('patients'));
     }
 
     /**
@@ -50,7 +51,7 @@ class PatientNextOfKinController extends Controller
     public function show(PatientNextOfKin $patientNextOfKin)
     {
         $patientNextOfKin->load('patient');
-        return view('patient-next-of-kin.show', compact('patientNextOfKin'));
+        return Inertia::render('Module1/PatientNextOfKin/Show', compact('patientNextOfKin'));
     }
 
     /**
@@ -59,7 +60,8 @@ class PatientNextOfKinController extends Controller
     public function edit(PatientNextOfKin $patientNextOfKin)
     {
         $patients = Patient::all();
-        return view('patient-next-of-kin.edit', compact('patientNextOfKin', 'patients'));
+        $nextOfKin = $patientNextOfKin;
+        return Inertia::render('Module1/PatientNextOfKin/Edit', compact('nextOfKin', 'patients'));
     }
 
     /**

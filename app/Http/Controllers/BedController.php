@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bed;
 use App\Models\Ward;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BedController extends Controller
 {
@@ -14,7 +15,7 @@ class BedController extends Controller
     public function index()
     {
         $beds = Bed::with('ward')->paginate(15);
-        return view('beds.index', compact('beds'));
+        return Inertia::render('Beds/Index', compact('beds'));
     }
 
     /**
@@ -23,7 +24,7 @@ class BedController extends Controller
     public function create()
     {
         $wards = Ward::all();
-        return view('beds.create', compact('wards'));
+        return Inertia::render('Beds/Create', compact('wards'));
     }
 
     /**
@@ -48,7 +49,7 @@ class BedController extends Controller
     public function show(Bed $bed)
     {
         $bed->load('ward');
-        return view('beds.show', compact('bed'));
+        return Inertia::render('Beds/Show', compact('bed'));
     }
 
     /**
@@ -57,7 +58,7 @@ class BedController extends Controller
     public function edit(Bed $bed)
     {
         $wards = Ward::all();
-        return view('beds.edit', compact('bed', 'wards'));
+        return Inertia::render('Beds/Edit', compact('bed', 'wards'));
     }
 
     /**
