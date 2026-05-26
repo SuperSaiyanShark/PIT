@@ -8,6 +8,7 @@
                         <h3 class="text-lg font-medium">Ward Management</h3>
                         <a href="{{ route('module3.my-wards.create') }}"
                             class="bg-[#00B2D1] hover:bg-[#134E5E] text-white px-4 py-2 rounded-lg text-sm font-bold transition">
+                            {{-- FIXED: Using correct module3.my-wards.create route --}}
                             + Add New Ward
                         </a>
                     </div>
