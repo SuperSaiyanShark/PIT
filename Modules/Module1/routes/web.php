@@ -8,6 +8,7 @@ use App\Http\Controllers\StaffRoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ResponsibilityController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\MedicalRecordController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -67,6 +68,9 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     Route::post('/patients/{patient}/medical-records', [PatientController::class, 'storeMedicalRecord'])->name('patients.medical-records.store');
     Route::post('/patients/{patient}/admit',   [PatientController::class, 'admit'])->name('patients.admit');
     Route::post('/patients/{patient}/discharge',[PatientController::class, 'discharge'])->name('patients.discharge');
+
+    // Medical Records Management
+    Route::resource('medical-records', MedicalRecordController::class);
 
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
