@@ -97,6 +97,7 @@ return new class extends Migration
         // ==========================================
 
         // Function 1: Maintain patient treatment history count
+        DB::statement('DROP FUNCTION IF EXISTS get_patient_treatment_count(bigint) CASCADE;');
         DB::unprepared("
             CREATE OR REPLACE FUNCTION get_patient_treatment_count(p_patient_id BIGINT)
             RETURNS INTEGER
