@@ -2,23 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['wardid', 'bednumber', 'status'])]
 class Bed extends Model
 {
-    protected $table = 'bed';
-    protected $primaryKey = 'bedid';
-    public $timestamps = false;
+    use HasFactory;
+
+    protected $table = 'beds';
+
+    protected $fillable = [
+        'bedNumber',
+        'wardNumber',
+        'status',
+        'patient_name',
+        'is_occupied'
+    ];
 
     public function ward()
     {
-        return $this->belongsTo(Ward::class, 'wardid', 'id');
-    }
-
-    public function admissions()
-    {
-        return $this->hasMany(Admission::class, 'bedid', 'bedid');
+        return $this->belongsTo(Ward::class, 'wardNumber', 'wardNumber');
     }
 }

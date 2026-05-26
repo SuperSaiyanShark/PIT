@@ -28,8 +28,8 @@ Route::get('/dashboard', function () {
     $totalStaff = \App\Models\User::where('staff_type', '!=', null)->count();
     $totalDepartments = \App\Models\Department::count();
     $totalPatients = \App\Models\Patient::count();
-    $totalWards = \App\Models\Ward::count();
-    
+    $totalWards = \Modules\Module3\app\Models\Module3Ward::count();
+
     return Inertia::render('Dashboard', [
         'totalStaff' => $totalStaff,
         'totalDepartments' => $totalDepartments,
@@ -50,38 +50,38 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     Route::post('/staff/{staff}/update-status', [StaffController::class, 'updateStatus'])->name('staff.updateStatus');
     Route::get('/staff/{staff}/schedule', [StaffController::class, 'schedule'])->name('staff.schedule');
     Route::get('/staff/{staff}/responsibilities', [StaffController::class, 'responsibilities'])->name('staff.responsibilities');
-    
+
     // Staff Management - Restricted to @meadow.com users only
     Route::resource('staff', StaffController::class);
-    
+
     // Department Management
     Route::resource('departments', DepartmentController::class);
-    
+
     // Admissions Management
     Route::resource('admissions', AdmissionController::class);
     Route::patch('/admissions/{admission}/discharge', [AdmissionController::class, 'discharge'])->name('admissions.discharge');
-    
-    // Ward Management
+
+    // Ward Management (Main App)
     Route::resource('wards', WardController::class);
-    
-    // Bed Management
+
+    // Bed Management (Main App)
     Route::resource('beds', BedController::class);
-    
+
     // Staff Role Management
     Route::resource('staff-roles', StaffRoleController::class);
-    
+
     // Schedule Management
     Route::resource('schedules', ScheduleController::class);
-    
+
     // Responsibility Management
     Route::resource('responsibilities', ResponsibilityController::class);
-    
+
     // Patient Management
     Route::resource('patients', PatientController::class);
-    
+
     // Patient Next of Kin Management
     Route::resource('patient-next-of-kin', PatientNextOfKinController::class);
-    
+
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -95,7 +95,7 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
             'totalStaff' => \App\Models\User::where('staff_type', '!=', null)->count(),
             'totalPatients' => \App\Models\Patient::count() ?? 0,
             'totalDepartments' => \App\Models\Department::count(),
-            'totalWards' => \App\Models\Ward::count(),
+            'totalWards' => \Modules\Module3\app\Models\Ward::count(),
         ]);
     })->name('module1.dashboard');
 
@@ -108,4 +108,4 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

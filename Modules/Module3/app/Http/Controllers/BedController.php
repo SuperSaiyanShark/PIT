@@ -2,10 +2,9 @@
 
 namespace Modules\Module3\app\Http\Controllers;
 
-use Modules\Module3\app\Models\Ward;
+use App\Models\Ward;
 use Modules\Module3\app\Models\Bed;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class BedController extends Controller
 {
@@ -16,25 +15,7 @@ class BedController extends Controller
             ->orderBy('bedNumber', 'asc')
             ->get();
 
-        // CHANGED: Use view() with the module3:: namespace pointing to your views/beds folder
-        return view('module3::beds.index', [
-            'ward' => $ward,
-            'beds' => $beds
-        ]);
-    }
-
-    public function showAssignForm($wardNumber, $bedNumber)
-    {
-        $ward = Ward::where('wardNumber', $wardNumber)->firstOrFail();
-        $bed = Bed::where('wardNumber', $wardNumber)
-            ->where('bedNumber', $bedNumber)
-            ->firstOrFail();
-
-        // CHANGED: Use view() pointing to views/beds/assign.blade.php
-        return view('module3::beds.assign', [
-            'ward' => $ward,
-            'bed' => $bed
-        ]);
+        return view('module3::beds.index', compact('ward', 'beds'));
     }
 
     public function assignPatient(Request $request, $wardNumber, $bedNumber)
@@ -43,48 +24,33 @@ class BedController extends Controller
             'patient_name' => 'required|string|max:255',
         ]);
 
-        // Call stored procedure sp_assign_bed
-        DB::statement('CALL sp_assign_bed(?, ?)', [$bedNumber, $wardNumber]);
-
-        // Update patient name
-        DB::table('beds')
+        $bed = Bed::where('wardNumber', $wardNumber)
             ->where('bedNumber', $bedNumber)
-            ->where('wardNumber', $wardNumber)
-            ->update(['patient_name' => $request->patient_name]);
+            ->firstOrFail();
+
+        $bed->update([
+            'status' => 'Occupied',
+            'patient_name' => $request->patient_name,
+            'is_occupied' => true
+        ]);
 
         return redirect()->route('my-wards.beds', $wardNumber)
-            ->with('success', 'Patient assigned to bed ' . $bedNumber . ' successfully');
+            ->with('success', 'Patient assigned to bed ' . $bedNumber);
     }
 
     public function vacateBed($wardNumber, $bedNumber)
     {
-        // Call stored procedure sp_release_bed
-        DB::statement('CALL sp_release_bed(?, ?)', [$bedNumber, $wardNumber]);
+        $bed = Bed::where('wardNumber', $wardNumber)
+            ->where('bedNumber', $bedNumber)
+            ->firstOrFail();
+
+        $bed->update([
+            'status' => 'Available',
+            'patient_name' => null,
+            'is_occupied' => false
+        ]);
 
         return redirect()->route('my-wards.beds', $wardNumber)
-            ->with('success', 'Bed ' . $bedNumber . ' vacated successfully');
-    }
-
-    public function wardSummary($wardNumber)
-    {
-        // Call stored procedure sp_ward_summary
-        DB::statement('CALL sp_ward_summary(?)', [$wardNumber]);
-
-        $totalBeds = Bed::where('wardNumber', $wardNumber)->count();
-        $occupiedBeds = Bed::where('wardNumber', $wardNumber)
-            ->where('status', 'Occupied')
-            ->count();
-        $availableBeds = Bed::where('wardNumber', $wardNumber)
-            ->where('status', 'Available')
-            ->count();
-
-        $ward = Ward::where('wardNumber', $wardNumber)->first();
-
-        return response()->json([
-            'ward_name' => $ward->wardName,
-            'total_beds' => $totalBeds,
-            'occupied_beds' => $occupiedBeds,
-            'available_beds' => $availableBeds
-        ]);
+            ->with('success', 'Bed ' . $bedNumber . ' vacated');
     }
 }

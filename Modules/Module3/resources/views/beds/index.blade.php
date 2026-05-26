@@ -54,19 +54,21 @@
                                 <td class="px-6 py-4 font-medium">{{ $bed->bedNumber }}</td>
                                 <td class="px-6 py-4">
                                     <span class="px-2 py-1 rounded-full text-xs font-semibold
-                                            @if($bed->status == 'Available') bg-green-100 text-green-800
-                                            @elseif($bed->status == 'Occupied') bg-red-100 text-red-800
-                                            @else bg-yellow-100 text-yellow-800 @endif">
+                                                        @if($bed->status == 'Available') bg-green-100 text-green-800
+                                                        @elseif($bed->status == 'Occupied') bg-red-100 text-red-800
+                                                        @else bg-yellow-100 text-yellow-800 @endif">
                                         {{ $bed->status }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">{{ $bed->patient_name ?? '—' }}</td>
                                 <td class="px-6 py-4">
                                     @if($bed->status == 'Available')
-                                        <a href="{{ route('my-wards.beds.assign.form', [$bed->bedNumber, $ward->wardNumber]) }}"
+                                        <a href="{{ route('module3.wards.beds.assign', [$ward->wardNumber, $bed->bedNumber]) }}"
                                             class="text-blue-600 hover:text-blue-900">Assign Patient</a>
-                                    @elseif($bed->status == 'Occupied')
-                                        <form action="{{ route('my-wards.beds.vacate', [$bed->bedNumber, $ward->wardNumber]) }}"
+                                    @elseif($bed->status == 'Occupied')<form
+                                            action="{{ route('module3.wards.beds.vacate', [$ward->wardNumber, $bed->bedNumber]) }}"
+                                            <form
+                                            action="{{ route('my-wards.beds.vacate', [$ward->wardNumber, $bed->bedNumber]) }}"
                                             method="POST" class="inline">
                                             @csrf
                                             <button type="submit" class="text-orange-600 hover:text-orange-900"

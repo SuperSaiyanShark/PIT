@@ -2,34 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'department_id', 'floor', 'capacity', 'ward_head_id'])]
 class Ward extends Model
 {
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
+    use HasFactory;
 
-    public function head()
-    {
-        return $this->belongsTo(User::class, 'ward_head_id');
-    }
+    protected $table = 'wards';
 
-    public function staff()
-    {
-        return $this->hasMany(User::class);
-    }
+    protected $primaryKey = 'allocationid';
 
-    public function responsibilities()
-    {
-        return $this->hasMany(Responsibility::class);
-    }
+    public $incrementing = true;
 
-    public function patients()
+    protected $fillable = [
+        'wardName',
+        'wardNumber',
+        'capacity',
+        'location',
+        'allocationid'
+    ];
+
+    public function beds()
     {
-        return $this->hasMany(Patient::class);
+        return $this->hasMany(Bed::class, 'wardNumber', 'wardNumber');
     }
 }

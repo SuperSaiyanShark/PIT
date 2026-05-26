@@ -45,7 +45,7 @@
                                             {{ $ward->capacity }}
                                         </td>
                                         <td class="px-6 py-4 space-x-2">
-                                            <a href="{{ route('my-wards.beds', $ward->wardNumber) }}"
+                                            <a href="{{ route('module3.wards.beds', $ward->wardNumber) }}"
                                                 class="text-green-600 hover:text-green-900">View Beds</a>
                                             <a href="{{ route('my-wards.edit', $ward->allocationid) }}"
                                                 class="text-blue-600 hover:text-blue-900">Edit</a>

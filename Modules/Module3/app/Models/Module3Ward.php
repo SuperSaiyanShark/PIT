@@ -4,8 +4,7 @@ namespace Modules\Module3\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-class Ward extends Model
+class Module3Ward extends Model
 {
     protected $table = 'wards';
     protected $primaryKey = 'allocationid';
