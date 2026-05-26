@@ -6,7 +6,7 @@
 
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-medium">Ward Management</h3>
-                        <a href="{{ route('my-wards.create') }}"
+                        <a href="{{ route('module3.my-wards.create') }}"
                             class="bg-[#00B2D1] hover:bg-[#134E5E] text-white px-4 py-2 rounded-lg text-sm font-bold transition">
                             + Add New Ward
                         </a>
@@ -45,11 +45,11 @@
                                             {{ $ward->capacity }}
                                         </td>
                                         <td class="px-6 py-4 space-x-2">
-                                            <a href="{{ route('module3.wards.beds', $ward->wardNumber) }}"
+                                            <a href="{{ route('module3.my-wards.beds', $ward->wardNumber) }}"
                                                 class="text-green-600 hover:text-green-900">View Beds</a>
-                                            <a href="{{ route('my-wards.edit', $ward->allocationid) }}"
+                                            <a href="{{ route('module3.my-wards.edit', $ward->allocationid) }}"
                                                 class="text-blue-600 hover:text-blue-900">Edit</a>
-                                            <form action="{{ route('my-wards.destroy', $ward->allocationid) }}"
+                                            <form action="{{ route('module3.my-wards.destroy', $ward->allocationid) }}"
                                                 method="POST" class="inline">
                                                 @csrf
                                                 @method('DELETE')
