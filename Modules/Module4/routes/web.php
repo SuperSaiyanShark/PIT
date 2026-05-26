@@ -4,6 +4,7 @@ use Modules\Module4\app\Http\Controllers\ProfileController;
 use Modules\Module4\app\Http\Controllers\AppointmentController;
 use Modules\Module4\app\Http\Controllers\TreatmentController;
 use Modules\Module4\app\Http\Controllers\StaffController;
+use Modules\Module4\app\Http\Controllers\PatientController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
     // Fallback resource configurations matching your layout module prefixes
     Route::resource('treatments', TreatmentController::class)->names('treatments');
     Route::resource('staff', StaffController::class)->names('staff');
+    Route::resource('patients', PatientController::class)->names('patients');
 
     // Diagnostics Panel Endpoints
     Route::prefix('diagnostics')->group(function () {
