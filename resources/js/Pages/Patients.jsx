@@ -32,12 +32,13 @@ export default function Patients({ patients = [], wards = [] }) {
     const filteredPatients = useMemo(() => {
         return patients.filter(patient => {
             const wardName = patient.ward?.name || '';
+            const allocationId = patient.allocation_id || '';
             const searchLower = searchTerm.toLowerCase();
             const fullName = getFullName(patient);
             
             const matchesSearch = 
                 fullName.toLowerCase().includes(searchLower) ||
-                patient.allocation_id.toLowerCase().includes(searchLower) ||
+                allocationId.toLowerCase().includes(searchLower) ||
                 wardName.toLowerCase().includes(searchLower);
             
             const matchesWard = selectedWard === '' || patient.ward_id === parseInt(selectedWard);

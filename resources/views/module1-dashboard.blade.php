@@ -99,6 +99,13 @@
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">Medical Records</h4>
                         <p class="text-gray-600 text-sm">Access and update medical records</p>
                     </a>
+
+                    <!-- Patient Next of Kin -->
+                    <a href="{{ route('patient-next-of-kin.index') }}" class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition-shadow p-8 text-center">
+                        <div class="text-5xl mb-4">👨‍👩‍👧</div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Next of Kin</h4>
+                        <p class="text-gray-600 text-sm">Manage patient next of kin information</p>
+                    </a>
                 </div>
             </div>
 
@@ -118,6 +125,13 @@
                         <div class="text-5xl mb-4">🛏️</div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">Wards</h4>
                         <p class="text-gray-600 text-sm">Manage hospital wards</p>
+                    </a>
+
+                    <!-- Beds -->
+                    <a href="{{ route('beds.index') }}" class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition-shadow p-8 text-center">
+                        <div class="text-5xl mb-4">🛌</div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Beds</h4>
+                        <p class="text-gray-600 text-sm">Manage hospital beds</p>
                     </a>
                 </div>
             </div>

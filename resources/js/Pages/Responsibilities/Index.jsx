@@ -42,9 +42,11 @@ export default function ResponsibilitiesIndex({ responsibilities = [], patients 
     const filteredPatients = useMemo(() => {
         return patients.filter(patient => {
             const wardName = patient.ward?.name || '';
+            const patientName = patient.name || '';
+            const allocationId = patient.allocation_id || '';
             const matchesSearch =
-                patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                patient.allocation_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                allocationId.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 wardName.toLowerCase().includes(searchTerm.toLowerCase());
 
             const matchesWard = selectedWard === '' || patient.ward?.name === selectedWard;

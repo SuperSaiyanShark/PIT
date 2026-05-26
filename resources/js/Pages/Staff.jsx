@@ -30,9 +30,10 @@ export default function Staff({ staff = [], departments = [], wards = [], staffR
             const deptName = typeof member.department === 'object' && member.department 
                 ? member.department.name 
                 : member.department || '';
+            const memberName = member.name || '';
             
             const matchesSearch = 
-                member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 member.role?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 deptName.toLowerCase().includes(searchTerm.toLowerCase());
             

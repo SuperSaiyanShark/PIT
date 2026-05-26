@@ -7,7 +7,10 @@ use App\Http\Controllers\WardController;
 use App\Http\Controllers\StaffRoleController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ResponsibilityController;
+use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\BedController;
+use App\Http\Controllers\PatientNextOfKinController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -54,8 +57,15 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     // Department Management
     Route::resource('departments', DepartmentController::class);
     
+    // Admissions Management
+    Route::resource('admissions', AdmissionController::class);
+    Route::patch('/admissions/{admission}/discharge', [AdmissionController::class, 'discharge'])->name('admissions.discharge');
+    
     // Ward Management
     Route::resource('wards', WardController::class);
+    
+    // Bed Management
+    Route::resource('beds', BedController::class);
     
     // Staff Role Management
     Route::resource('staff-roles', StaffRoleController::class);
@@ -68,6 +78,9 @@ Route::middleware(['auth', 'meadow.staff'])->group(function () {
     
     // Patient Management
     Route::resource('patients', PatientController::class);
+    
+    // Patient Next of Kin Management
+    Route::resource('patient-next-of-kin', PatientNextOfKinController::class);
     
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

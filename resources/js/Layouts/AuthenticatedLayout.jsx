@@ -99,6 +99,20 @@ export default function AuthenticatedLayout({ header, children }) {
                         {sidebarOpen && <span className="ml-3 text-sm font-medium transition-opacity duration-200">Responsibilities</span>}
                     </Link>
 
+                    {/* Admissions */}
+                    <Link
+                        href={route('admissions.index')}
+                        className={`flex items-center ${sidebarOpen ? 'justify-start px-4' : 'justify-center'} py-3 rounded-lg transition-all duration-200 group ${
+                            route().current('admissions.*') ? 'bg-cyan-500 text-white shadow-sm' : 'hover:bg-cyan-500/50 text-cyan-100 hover:text-white'
+                        }`}
+                        title={!sidebarOpen ? "Admissions" : ""}
+                    >
+                        <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v6a1 1 0 102 0V8z" clipRule="evenodd"></path>
+                        </svg>
+                        {sidebarOpen && <span className="ml-3 text-sm font-medium transition-opacity duration-200">Admissions</span>}
+                    </Link>
+
                     {/* Module1 Section - Patient Management */}
                     <div className="my-4 pt-4 border-t border-cyan-500/60 space-y-1">
                         {sidebarOpen ? (

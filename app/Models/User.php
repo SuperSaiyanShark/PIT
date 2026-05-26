@@ -78,6 +78,26 @@ class User extends Authenticatable
         return $this->hasMany(\Modules\Module4\app\Models\Treatment::class, 'user_id');
     }
 
+    public function workExperiences()
+    {
+        return $this->hasMany(WorkExperience::class, 'staff_id');
+    }
+
+    public function nurseKits()
+    {
+        return $this->hasMany(NurseKit::class, 'staff_id');
+    }
+
+    public function assignedPatientCares()
+    {
+        return $this->hasMany(AssignedPatientCare::class, 'staff_id');
+    }
+
+    public function discharges()
+    {
+        return $this->hasMany(Discharge::class, 'discharged_by');
+    }
+
     /**
      * Check if user is a Meadow staff member (@meadow.com email)
      */
